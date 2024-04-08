@@ -1,19 +1,10 @@
-import express from "express";
-import { PORT, uri } from "./config.js";
-import mongoose from "mongoose";
-import { Book } from './models/bookModels.js';
+import express from 'express';
+import { Book } from '../models/bookModel.js';
 
-const app = express();
-
-app.use(express.json());
-
-app.get('/', (req, res) => {
-    console.log(req);
-    return res.status(234).send('Welcome to MERN stack tutorial!');
-});
+const router = express.Router();
 
 // Post a book
-app.post('/books', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         if(
             !req.body.title ||
@@ -38,7 +29,7 @@ app.post('/books', async (req, res) => {
 });
 
 // Get all books
-app.get('/books', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const books = await Book.find({});
         return res.status(200).json({
@@ -52,7 +43,7 @@ app.get('/books', async (req, res) => {
 });
 
 // Get a book by id
-app.get('/books/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const books = await Book.findById(id);
@@ -67,7 +58,7 @@ app.get('/books/:id', async (req, res) => {
 });
 
 // Update a book
-app.put('/books/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         if(
             !req.body.title ||
@@ -91,7 +82,7 @@ app.put('/books/:id', async (req, res) => {
 });
 
 // Delete a book
-app.delete('/books/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const result = await Book.findByIdAndDelete(id);
@@ -105,14 +96,4 @@ app.delete('/books/:id', async (req, res) => {
     }
 });
 
-mongoose
-.connect(uri)
-.then (() => {
-    console.log('App connected to DB');
-    app.listen(PORT, () => {
-        console.log(`App is listening to port: ${PORT}`);
-    });
-})
-.catch((error) => {
-    console.log(error);
-});
+export default router;
