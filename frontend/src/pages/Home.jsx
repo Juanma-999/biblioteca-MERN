@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Spinner from '../components/Spinner';
 import { Link } from 'react-router-dom';
@@ -10,7 +10,7 @@ import BookTable from '../components/home/BookTable';
 const Home = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showType, setShowType] = useState('table');
+  const [showType, setShowType] = useState(localStorage.getItem('showType') || 'table');
   useEffect(() => {
     setLoading(true);
     axios
@@ -24,6 +24,9 @@ const Home = () => {
         setLoading(false);
       });
   }, []);
+  useEffect(() => {
+    localStorage.setItem('showType', showType);
+  }, [showType]);
   return (
     <div className='p-4'>
       <div className="flex justify-center items-center gap-x-4">
