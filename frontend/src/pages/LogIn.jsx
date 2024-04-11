@@ -9,17 +9,17 @@ const SignUp = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleSignUp = () => {
+    const handleLogIn = () => {
         const data = {
             username,
             password,
         };
         setLoading(true);
         axios
-        .post(`http://localhost:5555/auth/signup`, data)
+        .post(`http://localhost:5555/auth/login`, data)
         .then(() => {
             setLoading(false);
-            //navigate('/');
+            navigate('/');
         })
         .catch((error) => {
             setLoading(false);
@@ -51,7 +51,7 @@ const SignUp = () => {
         className="border-2 border-gray-500 px-4 py-2 w-full"
         />
         </div>
-        <button className="p-2 bg-sky-300 m-8" onClick={handleSignUp}>
+        <button className="p-2 bg-sky-300 m-8" onClick={handleLogIn}>
         Create account
         </button>
         </div>

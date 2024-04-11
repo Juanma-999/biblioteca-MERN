@@ -1,10 +1,11 @@
 import express from 'express';
 import { User } from '../models/userModel.js';
+import passport from '../passportConfig.js';
 
 const router = express.Router();
 
-// Post a user
-router.post('/', async (req, res) => {
+// Post a user / sign up
+router.post('/signup', async (req, res) => {
     try {
         if (!req.body.username || !req.body.password) {
             return res.status(400).send({
@@ -21,6 +22,11 @@ router.post('/', async (req, res) => {
         console.error(error.message);
         res.status(500).send({ message: 'Internal server error' });
     }
+});
+
+// Log in
+router.post('/login', passport.authenticate('local'), (req, res) => {
+    res.json(req.user);
 });
 
 // Get all users
