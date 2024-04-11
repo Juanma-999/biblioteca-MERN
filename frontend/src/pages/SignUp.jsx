@@ -19,7 +19,7 @@ const SignUp = () => {
         .post(`http://localhost:5555/auth/signup`, data)
         .then(() => {
             setLoading(false);
-            //navigate('/');
+            navigate('/login');
         })
         .catch((error) => {
             setLoading(false);
@@ -45,7 +45,7 @@ const SignUp = () => {
         <div className="my-4">
         <label className="text-xl mr-4 text-gray-500">Password</label>
         <input
-        type="text"
+        type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         className="border-2 border-gray-500 px-4 py-2 w-full"

@@ -1,6 +1,7 @@
 import express from 'express';
 import { User } from '../models/userModel.js';
 import passport from '../passportConfig.js';
+import bcryptjs from 'bcryptjs';
 
 const router = express.Router();
 
@@ -12,9 +13,11 @@ router.post('/signup', async (req, res) => {
                 message: 'Please provide all required fields (username, password)',
             });
         }
+        const { username, password } = req.body;
+        const hashedPassword = await bcryptjs.hash(password, 10);
         const newUser = {
-            username: req.body.username,
-            password: req.body.password,
+            username,
+            password: hashedPassword,
         };
         const user = await User.create(newUser);
         return res.status(201).send(user);

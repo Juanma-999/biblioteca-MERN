@@ -13,7 +13,6 @@ const Home = () => {
   const [showType, setShowType] = useState(localStorage.getItem('showType') || 'table');
   const navigate = useNavigate();
 
-
   useEffect(() => {
     setLoading(true);
     axios
