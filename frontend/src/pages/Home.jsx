@@ -5,12 +5,15 @@ import { Link } from 'react-router-dom';
 import { MdOutlineAddBox } from 'react-icons/md';
 import BookCards from '../components/home/BookCards';
 import BookTable from '../components/home/BookTable';
-
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showType, setShowType] = useState(localStorage.getItem('showType') || 'table');
+  const navigate = useNavigate();
+
+
   useEffect(() => {
     setLoading(true);
     axios
@@ -27,6 +30,22 @@ const Home = () => {
   useEffect(() => {
     localStorage.setItem('showType', showType);
   }, [showType]);
+
+  const handleLogOut = () => {
+        setLoading(true);
+        axios
+        .post(`http://localhost:5555/auth/logout`)
+        .then(() => {
+            setLoading(false);
+            navigate('/login');
+        })
+        .catch((error) => {
+            setLoading(false);
+            alert('An error happened. Please check the console.');
+            console.log(error);
+        });
+    };
+
   return (
     <div className='p-4'>
       <div className="flex justify-center items-center gap-x-4">
@@ -50,6 +69,14 @@ const Home = () => {
         </Link>
       </div>
       { loading ? (<Spinner />) : showType === 'table' ? (<BookTable books={books} />) : (<BookCards books={books} />)}
+      <div className="flex justify-center items-center gap-x-4">
+        <button
+          className='bg-sky-300 hover:bg-sky-600 px-4 py-1 rounded-lg'
+          onClick={handleLogOut}
+        >
+        Log out
+        </button>
+      </div>
     </div>
   )
 }

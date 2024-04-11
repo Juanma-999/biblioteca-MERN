@@ -29,6 +29,16 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
     res.json(req.user);
 });
 
+// Log out
+router.post('/logout', (req, res) => {
+    req.logout(function(err) {
+        if (err) {
+            return res.status(500).json({ message: 'Error logging out' });
+        }
+        res.send({ message: 'Logged out successfully' });
+    });
+});
+
 // Get all users
 router.get('/', async (req, res) => {
     try {
