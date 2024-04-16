@@ -1,49 +1,60 @@
-import express from 'express';
-import { User } from '../models/userModel.js';
-import passport from '../passportConfig.js';
+import { User } from "../models/userModel.js";
 import bcryptjs from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config';
 
-const router = express.Router();
+const createToken = (_id) => {
+    return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "1h" });
+};
 
-// Post a user / sign up
-router.post('/signup', async (req, res) => {
+const signUpUser = async (req, res) => {
     try {
-        if (!req.body.username || !req.body.password) {
+        const { username, password } = req.body;
+        if (!username || !password) {
             return res.status(400).send({
                 message: 'Please provide all required fields (username, password)',
             });
         }
-        const { username, password } = req.body;
         const hashedPassword = await bcryptjs.hash(password, 10);
         const newUser = {
             username,
             password: hashedPassword,
         };
         const user = await User.create(newUser);
-        return res.status(201).send(user);
+        const token = createToken(user._id);
+        return res.status(200).json({ username, token });
     } catch (error) {
         console.error(error.message);
         res.status(500).send({ message: 'Internal server error' });
     }
-});
+}
 
-// Log in
-router.post('/login', passport.authenticate('local'), (req, res) => {
-    res.json(req.user);
-});
+const logInUser = async (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+        return res.status(400).send({
+            message: 'Please provide all required fields (username, password)',
+        });
+    }
+    const user = await User.findOne({ username });
+    if(!user) {
+        return res.status(400).json({error: "Incorrect username"})
+    }
+    const match = await bcryptjs.compare(password, user.password);
+    if(!match) {
+        return res.status(400).json({error: "Incorrect password"})
+    }
+    try {
+        const token = createToken(user._id);
+        res.status(200).json({ username, token });
+    } catch (error) {
+        res.status(500).send({ message: 'Internal server error' });
+    }
+}
 
-// Log out
-router.post('/logout', (req, res) => {
-    req.logout(function(err) {
-        if (err) {
-            return res.status(500).json({ message: 'Error logging out' });
-        }
-        res.send({ message: 'Logged out successfully' });
-    });
-});
 
-// Get all users
-router.get('/', async (req, res) => {
+
+const getAllUsers = async (req, res) => {
     try {
         const users = await User.find({});
         return res.status(200).json({
@@ -54,10 +65,9 @@ router.get('/', async (req, res) => {
         console.error(error.message);
         res.status(500).send({ message: 'Internal server error' });
     }
-});
+}
 
-// Get a user by id
-router.get('/:id', async (req, res) => {
+const getUserById = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await User.findById(id);
@@ -69,10 +79,9 @@ router.get('/:id', async (req, res) => {
         console.error(error.message);
         res.status(500).send({ message: 'Internal server error' });
     }
-});
+}
 
-// Update a user
-router.put('/:id', async (req, res) => {
+const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
         if (!req.body.username || !req.body.password) {
@@ -92,10 +101,9 @@ router.put('/:id', async (req, res) => {
         console.error(error.message);
         res.status(500).send({ message: 'Internal server error' });
     }
-});
+}
 
-// Delete a user
-router.delete('/:id', async (req, res) => {
+const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
         const deletedUser = await User.findByIdAndDelete(id);
@@ -107,6 +115,6 @@ router.delete('/:id', async (req, res) => {
         console.error(error.message);
         res.status(500).send({ message: 'Internal server error' });
     }
-});
+}
 
-export default router;
+export {getAllUsers, getUserById, updateUser, deleteUser, signUpUser, logInUser}
