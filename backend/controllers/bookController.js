@@ -41,6 +41,20 @@ const getAllBooks = async (req, res) => {
     }
 }
 
+const getUserBooks = async (req, res) => {
+    const user = await User.findById(req.user._id);
+    try {
+        const userBooks = await Book.find({ user: user._id});
+        return res.status(200).json({
+            count: userBooks.length,
+            data: userBooks
+        });
+    } catch(error) {
+        console.log(error.message);
+        res.status(500).send({ message: error.message });
+    }
+}
+
 const getBookById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -58,32 +72,32 @@ const getBookById = async (req, res) => {
 const updateBook = async (req, res) => {
     // Grab the data from request body
     const { title, author, publishYear } = req.body;
-    
+
     // Check the fields are not empty
     if (!title || !author || !publishYear) {
         return res.status(400).json({ error: "All fields are required" });
     }
-    
+
     // Check the ID is valid type
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ error: "Incorrect ID" });
     }
-    
-    // Check the post exists
+
+    // Check the book exists
     const book = await Book.findById(req.params.id);
     if (!book) {
         return res.status(400).json({ error: "Book not found" });
     }
-    
-    // Check the user owns the post
+
+    // Check the user owns the book
     const user = await User.findById(req.user._id);
     if (!book.user.equals(user._id)) {
-        return res.status(401).json({ error: "Not authorized" });
+        return res.status(401).json({ error: "You dont own the book" });
     }
-    
+
     try {
         await book.updateOne({ title, author, publishYear });
-        res.status(200).json({ success: "Post was updated.", book });
+        res.status(200).json({ success: "Book was updated", book });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -109,10 +123,10 @@ const deleteBook = async (req, res) => {
 
     try {
         await book.deleteOne();
-        res.status(200).json({ success: "Book was deleted." });
+        res.status(200).json({ success: "Book was deleted" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
 
-export { getBookById, getAllBooks, addBook, updateBook, deleteBook };
+export { getBookById, getUserBooks, getAllBooks, addBook, updateBook, deleteBook };
