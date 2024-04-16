@@ -90,16 +90,28 @@ const updateBook = async (req, res) => {
 }
 
 const deleteBook = async (req, res) => {
+    // Check the ID is valid type
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ error: "Incorrect ID" });
+    }
+
+    // Check the book exists
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+        return res.status(400).json({ error: "Book not found" });
+    }
+
+    // Check the user owns the book
+    const user = await User.findById(req.user._id);
+    if (!book.user.equals(user._id)) {
+        return res.status(401).json({ error: "Not authorized" });
+    }
+
     try {
-        const { id } = req.params;
-        const result = await Book.findByIdAndDelete(id);
-        if(!result) {
-            return res.status(404).json({ message: 'Book not found' });
-        }
-        return res.status(200).send({ message: 'Book deleted successfully' });
+        await book.deleteOne();
+        res.status(200).json({ success: "Book was deleted." });
     } catch (error) {
-        console.log(error.message);
-        res.status(500).send({ message: error.message });
+        res.status(500).json({ error: error.message });
     }
 }
 
