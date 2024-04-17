@@ -16,7 +16,7 @@ const Home = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get('http://localhost:5555/books')
+      .get('http://localhost:5555/api/books')
       .then((response) => {
         setBooks(response.data.data);
         setLoading(false);
@@ -33,7 +33,7 @@ const Home = () => {
   const handleLogOut = () => {
         setLoading(true);
         axios
-        .post(`http://localhost:5555/auth/logout`)
+        .post(`http://localhost:5555/api/users/logout`)
         .then(() => {
             setLoading(false);
             navigate('/login');

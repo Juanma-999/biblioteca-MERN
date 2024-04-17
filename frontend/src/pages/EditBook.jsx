@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import BackButton from '../components/BackButton'
 import Spinner from '../components/Spinner'
 import axios from 'axios'
@@ -14,7 +14,7 @@ const EditBook = () => {
   useEffect(() => {
     setLoading(true);
     axios
-    .get(`http://localhost:5555/books/${id}`)
+    .get(`http://localhost:5555/api/books/${id}`)
     .then((response) => {
       console.log(JSON.stringify(response));
       setAuthor(response.data.data.author);

@@ -4,13 +4,9 @@ import { User } from "../models/userModel.js";
 
 const addBook = async (req, res) => {
     try {
-        if(
-            !req.body.title ||
-            !req.body.author ||
-            !req.body.publishYear
-        ) {
+        if(!req.body.title || !req.body.author || !req.body.publishYear) {
             return res.status(400).send({
-                message: 'Sent all required fields (title, author, publishYear)',
+                message: 'Book added succesfully',
             })
         }
         const user = await User.findById(req.user._id).select("_id");
@@ -70,31 +66,21 @@ const getBookById = async (req, res) => {
 }
 
 const updateBook = async (req, res) => {
-    // Grab the data from request body
     const { title, author, publishYear } = req.body;
-
-    // Check the fields are not empty
     if (!title || !author || !publishYear) {
-        return res.status(400).json({ error: "All fields are required" });
+        return res.status(400).json({ error: "Missing required fields" });
     }
-
-    // Check the ID is valid type
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ error: "Incorrect ID" });
     }
-
-    // Check the book exists
     const book = await Book.findById(req.params.id);
     if (!book) {
         return res.status(400).json({ error: "Book not found" });
     }
-
-    // Check the user owns the book
     const user = await User.findById(req.user._id);
     if (!book.user.equals(user._id)) {
-        return res.status(401).json({ error: "You dont own the book" });
+        return res.status(401).json({ error: "You do not own the book" });
     }
-
     try {
         await book.updateOne({ title, author, publishYear });
         res.status(200).json({ success: "Book was updated", book });
@@ -104,23 +90,17 @@ const updateBook = async (req, res) => {
 }
 
 const deleteBook = async (req, res) => {
-    // Check the ID is valid type
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ error: "Incorrect ID" });
     }
-
-    // Check the book exists
     const book = await Book.findById(req.params.id);
     if (!book) {
         return res.status(400).json({ error: "Book not found" });
     }
-
-    // Check the user owns the book
     const user = await User.findById(req.user._id);
     if (!book.user.equals(user._id)) {
         return res.status(401).json({ error: "Not authorized" });
     }
-
     try {
         await book.deleteOne();
         res.status(200).json({ success: "Book was deleted" });

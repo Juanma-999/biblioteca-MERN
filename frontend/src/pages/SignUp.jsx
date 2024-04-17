@@ -4,19 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const SignUp = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSignUp = () => {
         const data = {
-            username,
+            email,
             password,
         };
         setLoading(true);
         axios
-        .post(`http://localhost:5555/auth/signup`, data)
+        .post(`http://localhost:5555/api/users/signup`, data)
         .then(() => {
             setLoading(false);
             navigate('/login');
@@ -34,11 +34,11 @@ const SignUp = () => {
         {loading ? <Spinner /> : ''}
         <div className="flex flex-col border-2 border-sky-400 rounded-xl w-[600px] p-4 mx-auto">
         <div className="my-4">
-        <label className="text-xl mr-4 text-gray-500">Username</label>
+        <label className="text-xl mr-4 text-gray-500">email</label>
         <input
         type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         className="border-2 border-gray-500 px-4 py-2 w-full"
         />
         </div>

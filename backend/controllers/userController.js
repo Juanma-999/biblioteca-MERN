@@ -1,5 +1,5 @@
 import { User } from "../models/userModel.js";
-import bcryptjs from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 
@@ -7,52 +7,46 @@ const createToken = (_id) => {
     return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "1h" });
 };
 
-const signUpUser = async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        if (!username || !password) {
-            return res.status(400).send({
-                message: 'Please provide all required fields (username, password)',
-            });
-        }
-        const hashedPassword = await bcryptjs.hash(password, 10);
-        const newUser = {
-            username,
-            password: hashedPassword,
-        };
-        const user = await User.create(newUser);
-        const token = createToken(user._id);
-        return res.status(200).json({ username, token });
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).send({ message: 'Internal server error' });
+const registerUser = async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ error: "Missing required fields" });
     }
-}
+    const exist = await User.findOne({ email });
+    if (exist) {
+        return res.status(400).json({ error: "Email is already taken" });
+    }
+    const salt = await bcrypt.genSalt();
+    const hashed = await bcrypt.hash(password, salt);
+    try {
+        const user = await User.create({ email, password: hashed });
+        const token = createToken(user._id)
+        res.status(200).json({ email, token });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 const logInUser = async (req, res) => {
-    const { username, password } = req.body;
-    if (!username || !password) {
-        return res.status(400).send({
-            message: 'Please provide all required fields (username, password)',
-        });
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).send({ message: 'Missing required fields' });
     }
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
     if(!user) {
-        return res.status(400).json({error: "Incorrect username"})
+        return res.status(400).json({error: "Incorrect email"})
     }
-    const match = await bcryptjs.compare(password, user.password);
+    const match = await bcrypt.compare(password, user.password);
     if(!match) {
         return res.status(400).json({error: "Incorrect password"})
     }
     try {
         const token = createToken(user._id);
-        res.status(200).json({ username, token });
+        res.status(200).json({ email, token });
     } catch (error) {
-        res.status(500).send({ message: 'Internal server error' });
+        res.status(500).send({ error: error.message });
     }
 }
-
-
 
 const getAllUsers = async (req, res) => {
     try {
@@ -84,13 +78,13 @@ const getUserById = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
-        if (!req.body.username || !req.body.password) {
+        if (!req.body.email || !req.body.password) {
             return res.status(400).send({
-                message: 'Please provide all required fields (username, password)',
+                message: 'Please provide all required fields (email, password)',
             });
         }
         const updatedUser = await User.findByIdAndUpdate(id, {
-            username: req.body.username,
+            email: req.body.email,
             password: req.body.password,
         }, { new: true });
         if (!updatedUser) {
@@ -117,4 +111,4 @@ const deleteUser = async (req, res) => {
     }
 }
 
-export {getAllUsers, getUserById, updateUser, deleteUser, signUpUser, logInUser}
+export {getAllUsers, getUserById, updateUser, deleteUser, registerUser, logInUser}

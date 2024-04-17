@@ -33,8 +33,8 @@ app.get('/', (req, res) => {
     return res.status(234).send('Welcome to MERN stack tutorial!');
 });
 
-app.use('/books', booksRoutes);
-app.use('/users', usersRoutes);
+app.use('/api/books', booksRoutes);
+app.use('/api/users', usersRoutes);
 
 mongoose
 .connect(uri)
