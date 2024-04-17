@@ -1,24 +1,15 @@
-import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import SignUp from './pages/SignUp';
-import CreateBook from './pages/CreateBook';
-import EditBook from './pages/EditBook';
-import DeleteBook from './pages/DeleteBook';
-import ShowBook from './pages/ShowBook';
-import LogIn from './pages/LogIn';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Layout from './pages/Layout';
+import Login from './pages/user/Login';
+import Register from './pages/user/Register';
 
 const App = () => {
-  return (
+  return <BrowserRouter>
     <Routes>
-      <Route path='/login' element={<LogIn />} />
-      <Route path='/signup' element={<SignUp />} />
-      <Route path='/' element= {<Home />}/>
-      <Route path='/books/create' element={<CreateBook />} />
-      <Route path='/books/details/:id' element={<ShowBook />} />
-      <Route path='/books/edit/:id' element={<EditBook />} />
-      <Route path='books/delete/:id' element={<DeleteBook />} />
+      <Route path='/' element={<Layout />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/register' element={<Register />} />
     </Routes>
-  )
+  </BrowserRouter>
 }
-
 export default App
