@@ -3,7 +3,7 @@ import { deleteUser, getAllUsers, getUserById, logInUser, registerUser, updateUs
 
 const router = express.Router();
 
-router.post('/signup', registerUser);
+router.post('/register', registerUser);
 
 router.post('/login', logInUser);
 
