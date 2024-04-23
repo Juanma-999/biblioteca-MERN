@@ -4,10 +4,10 @@
 
 @layer components {
     .nav-link {
-        @apply w-12 h-10 rounded-md hover:bg-indigo-600 grid place-items-center
+        @apply rounded-md hover:bg-indigo-600 grid place-items-center
     }
     .card {
-        @apply bg-white px-8 py-10 rounded-lg shadow-lg max-w-2xl
+        @apply bg-white px-8 py-10 rounded-lg shadow-lg
     }
     .title {
         @apply font-bold mb-6
@@ -17,5 +17,8 @@
     }
     .btn {
         @apply block w-full bg-indigo-500 text-white rounded-md p-2 active:bg-indigo-600
+    }
+    .navbar {
+        @apply flex items-center justify-between px-10 py-5
     }
 }

@@ -6,9 +6,9 @@ const Layout = () => {
     return (
         <>
             <header className="bg-indigo-500 text-white">
-                <nav className="flex items-center justify-between p-4">
+                <nav className="navbar">
                     <Link className="nav-link" to="/">Home</Link>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-4">
                         <Link className="nav-link" to="/login">Log in</Link>
                         <Link className="nav-link" to="/register">Register</Link>
                     </div>

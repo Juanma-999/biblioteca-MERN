@@ -9,7 +9,7 @@ const BookDetail = ( { book, onClose }) => {
             <div onClick={(event) => event.stopPropagation()}
             className='w-[600px] max-w-full h-[400px] bg-white rounded-xl p-4 flex flex-col relative'
             >
-                <AiOutlineClose className='absoliute right-6 top-6 text-3xl text-red-600 cursor-pointer'
+                <AiOutlineClose className='absolute right-6 top-6 text-3xl text-red-600 cursor-pointer'
                 onClick={onClose}
                 />
                 <div className='flex justify-start books-center gap-x-2'>
@@ -26,7 +26,7 @@ const BookDetail = ( { book, onClose }) => {
                 </div>
                 <p className='mt-4'>Book description</p>
                 <p className='my-2'>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    {book.description || 'This book has no description.'}
                 </p>
                 <h4 className='my-2 text-gray-500'>ID: {book._id}</h4>
             </div>

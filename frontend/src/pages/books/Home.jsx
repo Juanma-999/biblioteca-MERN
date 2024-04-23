@@ -16,8 +16,6 @@ const Home = () => {
         }, 500);
     }, []);
 
-    console.log(books);
-
     return (
         <section className="card">
             <h1 className="title">Latest books</h1>
@@ -26,9 +24,12 @@ const Home = () => {
                 <FaSpinner className="animate-spin text-5xl text-center block" />
             )}
 
+            <div className='flex flex-wrap'>
             { books && books.map((book) => <div key={book._id}>
                 <Book book={book}/>
             </div>)}
+            </div>
+
         </section>
     )
 }
