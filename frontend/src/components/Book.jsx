@@ -1,6 +1,5 @@
 import { PiBookOpenTextLight } from 'react-icons/pi';
 import { BiShow, BiUserCircle } from 'react-icons/bi';
-import { BsInfoCircle } from 'react-icons/bs';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { MdOutlineDelete } from 'react-icons/md';
 import { FaRegCalendar } from "react-icons/fa";
