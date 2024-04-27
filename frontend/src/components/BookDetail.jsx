@@ -24,7 +24,6 @@ const BookDetail = ( { book, onClose }) => {
                     <FaRegCalendar className='text-red-300 text-2xl' />
                     <h2 className='my-1'>{book.publishYear}</h2>
                 </div>
-                <p className='mt-4'>Book description</p>
                 <p className='my-2'>
                     {book.description || 'This book has no description.'}
                 </p>

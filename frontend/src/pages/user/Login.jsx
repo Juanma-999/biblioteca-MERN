@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import Alert from "../../components/Alert";
 import { loginUser } from "../../controller/usersController";
 import { UserContext } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
     const { setUser } = useContext(UserContext);
@@ -28,7 +28,7 @@ const Login = () => {
 
     return (
         <section className="card">
-            <h1 className="title">Create a new account</h1>
+            <h1 className="title">Log in to your account</h1>
             <form onSubmit={handleLogin}>
                 <input
                     type='email'
@@ -46,6 +46,7 @@ const Login = () => {
                     onChange= {(e) => setFormData({ ...formData, password: e.target.value })}
                 />
                 <button className='btn'>Login</button>
+                <Link className='py-5' to="/register">Don&apos;t have an account?</Link>
             </form>
             {error && <Alert msg={error} />}
         </section>

@@ -75,7 +75,7 @@ const updateBook = async (req, res) => {
         return res.status(400).json({ error: "Book not found" });
     }
     const user = await User.findById(req.user._id);
-    if (!book.user.equals(user._id)) {
+    if (book.user?._id?.toString() !== user._id.toString()) {
         return res.status(401).json({ error: "You do not own the book" });
     }
     try {

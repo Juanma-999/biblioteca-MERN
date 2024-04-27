@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './pages/Layout';
 import Login from './pages/user/Login';
 import Register from './pages/user/Register';
-import Home from './pages/books/Home';
+import Home from './pages/Home';
 import EditBook from './pages/books/EditBook';
 
 const App = () => {

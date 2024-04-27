@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import Alert from "../../components/Alert";
 import { registerUser } from "../../controller/usersController";
 import { UserContext } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
     const { setUser } = useContext(UserContext);
@@ -54,6 +54,7 @@ const Register = () => {
                     onChange= {(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                 />
                 <button className='btn'>Register</button>
+                <Link className='py-5' to="/login"> Already have an account?</Link>
             </form>
             {error && <Alert msg={error} />}
         </section>
