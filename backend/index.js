@@ -1,7 +1,6 @@
 import express from "express";
 import { PORT, uri } from "./config.js";
 import mongoose from "mongoose";
-import booksRoutes from './routes/booksRoutes.js';
 import usersRoutes from './routes/usersRoutes.js';
 import dogsRoutes from './routes/dogsRoutes.js';
 import cors from 'cors';
@@ -34,7 +33,6 @@ app.get('/', (req, res) => {
     return res.status(234).send('Welcome to MERN stack tutorial!');
 });
 
-app.use('/api/books', booksRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/dogs', dogsRoutes);
 
