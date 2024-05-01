@@ -3,6 +3,7 @@ import { PORT, uri } from "./config.js";
 import mongoose from "mongoose";
 import booksRoutes from './routes/booksRoutes.js';
 import usersRoutes from './routes/usersRoutes.js';
+import dogsRoutes from './routes/dogsRoutes.js';
 import cors from 'cors';
 import 'dotenv/config.js';
 
@@ -35,6 +36,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/books', booksRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/dogs', dogsRoutes);
 
 mongoose
 .connect(uri)

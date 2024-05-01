@@ -3,7 +3,7 @@ import Layout from './pages/Layout';
 import Login from './pages/user/Login';
 import Register from './pages/user/Register';
 import Home from './pages/Home';
-import EditBook from './pages/books/EditBook';
+import EditDog from './pages/dogs/EditDog';
 
 const App = () => {
   return <BrowserRouter>
@@ -12,7 +12,7 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
-        <Route path='edit' element={<EditBook />} />
+        <Route path='edit' element={<EditDog />} />
       </ Route>
     </Routes>
   </BrowserRouter>
