@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Dog } from "../models/dogModel.js";
-
+import { User } from "../models/userModel.js";
 
 const getDogs = async (req, res) => {
     try {

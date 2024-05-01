@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation,  useNavigate } from "react-router-dom";
 import { updateDog } from "../../controller/dogsController";
 import { DogContext } from "../../context/DogContext";
 import Alert from "../../components/Alert";
 
 const EditDog = () => {
     const { dogs, setDogs } = useContext(DogContext);
+    const navigate = useNavigate();
     const { state } = useLocation();
     const [error, setError] = useState(null);
 
@@ -18,6 +19,7 @@ const EditDog = () => {
             const data = await updateDog(state._id, name, breed, age);
             const updatedDogs = dogs.filter((dog) => dog._id !== state._id);
             setDogs([...updatedDogs, data.dog]);
+            navigate("/");
         } catch(error) {
             setError(error.message);
         }
@@ -62,3 +64,4 @@ const EditDog = () => {
 }
 
 export default EditDog;
+

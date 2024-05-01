@@ -13,32 +13,41 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setTimeout(async () => {
-            const data = await getDogs();
-            setDogs(data.dogs);
-            setLoading(false);
-        }, 500);
-    }, []);
+        const fetchData = async () => {
+            try {
+                const data = await getDogs();
+                setDogs(data.dogs);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching dogs:", error);
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [setDogs]);
+
+    if (loading) {
+        return <FaSpinner className="animate-spin text-5xl text-center block" />;
+    }
+
+    if (!user.email) {
+        navigate('/login');
+        return null;
+    }
+
     return (
         <section className="card">
-            {user.email ? (
-                <div>
-                    <h1 className="title">Latest dogs</h1>
-                    { loading && (<FaSpinner className="animate-spin text-5xl text-center block" />)}
-                    <div className='flex flex-wrap'>
-                        { dogs && dogs.map((dog) => <div key={dog._id}>
+            <h1 className="title">Latest dogs</h1>
+            <div className='flex flex-wrap'>
+                {dogs && dogs.map((dog) => (
+                    <div key={dog._id}>
                         <Dog dog={dog}/>
-                        </div>)}
                     </div>
-                </div>
-                ) : (
-                <div>
-                    { navigate('/login') }
-                </div>
-                )
-            }
+                ))}
+            </div>
         </section>
-    )
-}
+    );
+};
 
 export default Home;
