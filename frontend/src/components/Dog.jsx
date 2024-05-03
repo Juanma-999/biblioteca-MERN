@@ -25,10 +25,12 @@ const Dog = ({ dog }) => {
             <div className='flex justify-start books-center gap-x-2'>
                 <h2 className='my-1'>{dog.breed}</h2>
 			</div>
-			<div className='flex justify-start books-center gap-x-2'>
-                <BiUserCircle className='text-red-300 text-2xl' />
-                <h2 className='my-1'>{dog.user.email}</h2>
-			</div>
+			<Link to={`/users/${dog.user._id}`}>
+				<div className='flex justify-start books-center gap-x-2'>
+					<BiUserCircle className='text-red-300 text-2xl' />
+					<h2 className='my-1'>{dog.user.email}</h2>
+				</div>
+			</Link>
             <h4 className='my-2 text-gray-500'>ID: {dog._id}</h4>
 			<div className='flex justify-between books-center gap-x-2 mt-4 p-4'>
 				<BiShow

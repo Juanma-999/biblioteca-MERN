@@ -1,3 +1,24 @@
+const getUserById = async(id) => {
+    if(!id) {
+        throw Error('Missing required field');
+    }
+
+    const res = await fetch(`/api/users/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const data = await res.json();
+
+    if(!res.ok) {
+        throw Error(data.error);
+    }
+
+    return data;
+}
+
 const loginUser = async(email, password) => {
     if(!email || !password) {
         throw Error('Missing required fields');
@@ -51,4 +72,5 @@ const registerUser = async(email, password, confirmPassword) => {
     return data;
 }
 
-export { loginUser, registerUser };
+export { getUserById, loginUser, registerUser };
+

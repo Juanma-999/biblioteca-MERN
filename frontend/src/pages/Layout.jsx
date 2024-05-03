@@ -23,7 +23,6 @@ const Layout = () => {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace('-', '+').replace('_', '/');
         const parsedToken = JSON.parse(window.atob(base64));
-        console.log('parsedToken._id:', parsedToken._id);
         return parsedToken._id;
     };
 
