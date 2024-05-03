@@ -11,15 +11,15 @@ const auth = async (req, res, next) => {
 
     try {
         const decodedToken = jwt.verify(token, process.env.SECRET);
-        const _id = decodedToken._id; // Assuming _id is the correct property in your token
-        console.log("Decoded _id:", _id); // Log decoded _id for debugging
+        const _id = decodedToken._id;
+        console.log("Decoded _id:", _id);
         req.user = await User.findById(_id).select("_id");
         if (!req.user) {
             return res.status(401).json({ error: "User not found" });
         }
         next();
     } catch(error) {
-        console.error("Token verification error:", error); // Log token verification error
+        console.error("Token verification error:", error);
         res.status(401).json({ error: "Unauthorized" });
     }
 };

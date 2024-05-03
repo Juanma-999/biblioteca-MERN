@@ -4,6 +4,7 @@ import Login from './pages/user/Login';
 import Register from './pages/user/Register';
 import Home from './pages/Home';
 import EditDog from './pages/dogs/EditDog';
+import User from './pages/user/User';
 
 const App = () => {
   return <BrowserRouter>
@@ -13,6 +14,7 @@ const App = () => {
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
         <Route path='edit' element={<EditDog />} />
+        <Route path='users/:id' element={<User />} />
       </ Route>
     </Routes>
   </BrowserRouter>
