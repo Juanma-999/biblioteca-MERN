@@ -27,29 +27,31 @@ const Login = () => {
     };
 
     return (
-        <section className="card">
-            <h1 className="title">Log in to your account</h1>
-            <form onSubmit={handleLogin}>
-                <input
-                    type='email'
-                    placeholder='Email'
-                    className='input'
-                    value={formData.email}
-                    onChange= {(e) => setFormData({ ...formData, email: e.target.value })}
-                    autoFocus
-                />
-                <input
-                    type='password'
-                    placeholder='Password'
-                    className='input'
-                    value={formData.password}
-                    onChange= {(e) => setFormData({ ...formData, password: e.target.value })}
-                />
-                <button className='btn'>Login</button>
-                <Link className='py-5' to="/register">Don&apos;t have an account?</Link>
-            </form>
-            {error && <Alert msg={error} />}
-        </section>
+        <div className="flex justify-center">
+            <section className="card">
+                <h1 className="title">Log in to your account</h1>
+                <form onSubmit={handleLogin}>
+                    <input
+                        type='email'
+                        placeholder='Email'
+                        className='input'
+                        value={formData.email}
+                        onChange= {(e) => setFormData({ ...formData, email: e.target.value })}
+                        autoFocus
+                    />
+                    <input
+                        type='password'
+                        placeholder='Password'
+                        className='input'
+                        value={formData.password}
+                        onChange= {(e) => setFormData({ ...formData, password: e.target.value })}
+                    />
+                    <button className='btn'>Login</button>
+                </form>
+                <Link className='mt-5' to="/register">Don&apos;t have an account?</Link>
+                {error && <Alert msg={error} />}
+            </section>
+        </div>
     )
 }
 export default Login;

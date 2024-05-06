@@ -37,16 +37,18 @@ const Home = () => {
     }
 
     return (
-        <section className="card">
-            <h1 className="title">Latest dogs</h1>
-            <div className='flex flex-wrap'>
-                {dogs && dogs.map((dog) => (
-                    <div key={dog._id}>
-                        <Dog dog={dog}/>
-                    </div>
-                ))}
-            </div>
-        </section>
+        <div className="flex justify-center">
+            <section className="card">
+                <h1 className="title">Latest dogs</h1>
+                <div className='flex flex-wrap'>
+                    {dogs && dogs.map((dog) => (
+                        <div key={dog._id}>
+                            <Dog dog={dog}/>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        </div>
     );
 };
 

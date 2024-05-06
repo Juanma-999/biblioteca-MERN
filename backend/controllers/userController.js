@@ -8,18 +8,22 @@ const createToken = (_id) => {
 };
 
 const registerUser = async (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { email, password, username } = req.body;
+    if (!email || !password || !username) {
         return res.status(400).json({ error: "Missing required fields" });
     }
-    const exist = await User.findOne({ email });
-    if (exist) {
+    const emailExists = await User.findOne({ email });
+    const usernameExists = await User.findOne({ username });
+    if (emailExists) {
         return res.status(400).json({ error: "Email is already taken" });
+    }
+    if(usernameExists) {
+        return res.status(400).json({ error: "Username is already taken" });
     }
     const salt = await bcrypt.genSalt();
     const hashed = await bcrypt.hash(password, salt);
     try {
-        const user = await User.create({ email, password: hashed });
+        const user = await User.create({ username, email, password: hashed });
         const token = createToken(user._id)
         res.status(200).json({ email, token });
     } catch (error) {

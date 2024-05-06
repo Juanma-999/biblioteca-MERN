@@ -26,40 +26,42 @@ const EditDog = () => {
     };
 
     return (
-        <section className="card">
-            <h1 className="text-3xl my-4">Edit dog</h1>
-            <div className="my-4">
-                <label className="text-xl mr-4 text-gray-500">Name</label>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="border-2 border-gray-500 px-4 py-2 w-full"
-                />
-            </div>
-            <div className="my-4">
-                <label className="text-xl mr-4 text-gray-500">Breed</label>
-                <input
-                    type="text"
-                    value={breed}
-                    onChange={(e) => setBreed(e.target.value)}
-                    className="border-2 border-gray-500 px-4 py-2 w-full"
-                />
-            </div>
-            <div className="my-4">
-                <label className="text-xl mr-4 text-gray-500">Age</label>
-                <input
-                    type="number"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                    className="border-2 border-gray-500 px-4 py-2 w-full"
-                />
-            </div>
-            <button className="p-2 bg-sky-300 m-8" onClick={handleUpdate}>
-                Save
-            </button>
-            {error && <Alert msg={error} />}
-        </section>
+        <div className="flex justify-center">
+            <section className="card">
+                <h1 className="text-3xl my-4">Edit dog</h1>
+                <div className="my-4">
+                    <label className="text-xl mr-4 text-gray-500">Name</label>
+                    <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="border-2 border-gray-500 px-4 py-2 w-full"
+                    />
+                </div>
+                <div className="my-4">
+                    <label className="text-xl mr-4 text-gray-500">Breed</label>
+                    <input
+                        type="text"
+                        value={breed}
+                        onChange={(e) => setBreed(e.target.value)}
+                        className="border-2 border-gray-500 px-4 py-2 w-full"
+                    />
+                </div>
+                <div className="my-4">
+                    <label className="text-xl mr-4 text-gray-500">Age</label>
+                    <input
+                        type="number"
+                        value={age}
+                        onChange={(e) => setAge(e.target.value)}
+                        className="border-2 border-gray-500 px-4 py-2 w-full"
+                    />
+                </div>
+                <button className="p-2 bg-sky-300 m-8" onClick={handleUpdate}>
+                    Save
+                </button>
+                {error && <Alert msg={error} />}
+            </section>
+        </div>
     )
 }
 

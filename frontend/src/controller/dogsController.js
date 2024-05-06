@@ -32,3 +32,4 @@ const updateDog = async (_id, name, breed, age) => {
 }
 
 export { getDogs, updateDog };
+

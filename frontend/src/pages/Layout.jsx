@@ -14,7 +14,7 @@ const Layout = () => {
         localStorage.removeItem('token');
         navigate('/');
     };
-    
+
     const getCurrentUserId = () => {
         const token = localStorage.getItem('token');
         if (!token) {

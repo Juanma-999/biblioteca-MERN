@@ -13,20 +13,6 @@ const getDogs = async (req, res) => {
     }
 }
 
-const getUserDogs = async (req, res) => {
-    const user = await User.findById(req.user._id);
-    try {
-        const userDogs = await Dog.find({ user: user._id});
-        return res.status(200).json({
-            count: userDogs.length,
-            data: userDogs
-        });
-    } catch(error) {
-        console.log(error.message);
-        res.status(500).send({ message: error.message });
-    }
-}
-
 const getDogById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -77,11 +63,11 @@ const updateDog = async (req, res) => {
     }
     const user = await User.findById(req.user._id);
     if (dog.user?._id?.toString() !== user._id.toString()) {
-        return res.status(401).json({ error: "You do not own the Dog" });
+        return res.status(401).json({ error: "You do not own this dog" });
     }
     try {
         await Dog.updateOne({ _id: req.params.id }, { name, age, breed });
-        res.status(200).json({ success: "Dog was updated", Dog });
+        res.status(200).json({ success: "Dog updated", Dog });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -101,10 +87,10 @@ const deleteDog = async (req, res) => {
     }
     try {
         await Dog.deleteOne({ _id: req.params.id });
-        res.status(200).json({ success: "Dog was deleted" });
+        res.status(200).json({ success: "Dog deleted" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
 
-export { getDogById, getUserDogs, getDogs, addDog, updateDog, deleteDog };
+export { getDogById, getDogs, addDog, updateDog, deleteDog };
