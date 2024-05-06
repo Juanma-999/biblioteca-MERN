@@ -12,7 +12,7 @@ const Dog = ({ dog }) => {
     return (
         <div
         key={dog._id}
-        className='border-2 border-gray-500 rounded-lg px-4 py-2 m-4 relative hover:shadow-xl hover:border-indigo-500'
+        className='border-2 border-gray-500 rounded-lg size-56 px-4 py-4 m-4 relative hover:shadow-xl hover:border-indigo-500'
         >
 			<div className='flex justify-start books-center gap-x-2'>
 				<FaDog className='text-indigo-500 text-2xl' />

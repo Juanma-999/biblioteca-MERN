@@ -43,32 +43,26 @@ const loginUser = async(email, password) => {
     return data;
 }
 
-const registerUser = async(email, password, confirmPassword) => {
-    if(!email || !password || !confirmPassword) {
+const registerUser = async(email, username, password, confirmPassword) => {
+    if(!email || !password || !confirmPassword || !username) {
         throw Error('Missing required fields');
     }
-
     if(password !== confirmPassword) {
         throw Error('Passwords do not match');
     }
-
     const res = await fetch('/api/users/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email, password})
+        body: JSON.stringify({email, password, username})
     });
-
     const data = await res.json();
-
     if(!res.ok) {
         throw Error(data.error);
     }
-
     localStorage.setItem('token', data.token);
     localStorage.setItem('email', data.email);
-
     return data;
 }
 

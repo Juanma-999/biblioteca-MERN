@@ -6,11 +6,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
     const { setUser } = useContext(UserContext);
-
     const navigate = useNavigate();
-
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
+        username: '',
         email: '',
         password: '',
         confirmPassword: ''
@@ -20,7 +19,7 @@ const Register = () => {
         e.preventDefault();
         try {
             await registerUser(formData.username, formData.email, formData.password, formData.confirmPassword);
-            setUser({ email: formData.email, books: [] });
+            setUser({ email: formData.email });
             navigate('/');
         } catch(error) {
             setError(error.message);
@@ -29,9 +28,9 @@ const Register = () => {
 
     return (
         <div className="flex justify-center">
-            <section className="card">
+            <section className="card auth">
                 <h1 className="title">Create a new account</h1>
-                <form onSubmit={handleRegister}>
+                <form className="form" onSubmit={handleRegister}>
                     <input
                         type='email'
                         placeholder='Email'
@@ -44,9 +43,8 @@ const Register = () => {
                         type='text'
                         placeholder='Username'
                         className='input'
-                        value={formData.name}
+                        value={formData.username}
                         onChange= {(e) => setFormData({ ...formData, username: e.target.value })}
-                        autoFocus
                     />
                     <input
                         type='password'

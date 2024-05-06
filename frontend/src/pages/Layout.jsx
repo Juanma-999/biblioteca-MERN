@@ -35,7 +35,7 @@ const Layout = () => {
 
     return (
         <>
-            <header className="bg-indigo-500 text-white">
+            <header>
                 <nav>
                     {user.email ? (
                         <div className="navbar">

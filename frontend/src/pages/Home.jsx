@@ -28,7 +28,11 @@ const Home = () => {
     }, [setDogs]);
 
     if (loading) {
-        return <FaSpinner className="animate-spin text-5xl text-center block" />;
+        return (
+            <div className="flex items-center justify-center">
+                <FaSpinner className="animate-spin text-5xl" />
+            </div>
+        )
     }
 
     if (!user.email) {
@@ -40,7 +44,7 @@ const Home = () => {
         <div className="flex justify-center">
             <section className="card">
                 <h1 className="title">Latest dogs</h1>
-                <div className='flex flex-wrap'>
+                <div className="dog-container">
                     {dogs && dogs.map((dog) => (
                         <div key={dog._id}>
                             <Dog dog={dog}/>

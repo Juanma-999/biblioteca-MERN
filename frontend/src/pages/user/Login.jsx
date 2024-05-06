@@ -19,7 +19,7 @@ const Login = () => {
         e.preventDefault();
         try {
             await loginUser(formData.email, formData.password);
-            setUser({ email: formData.email, books: [] });
+            setUser({ email: formData.email });
             navigate('/');
         } catch(error) {
             setError(error.message);
@@ -28,9 +28,9 @@ const Login = () => {
 
     return (
         <div className="flex justify-center">
-            <section className="card">
+            <section className="card auth">
                 <h1 className="title">Log in to your account</h1>
-                <form onSubmit={handleLogin}>
+                <form className="form" onSubmit={handleLogin}>
                     <input
                         type='email'
                         placeholder='Email'
@@ -46,12 +46,15 @@ const Login = () => {
                         value={formData.password}
                         onChange= {(e) => setFormData({ ...formData, password: e.target.value })}
                     />
-                    <button className='btn'>Login</button>
+                    <button className='btn'>
+                        Login
+                    </button>
                 </form>
-                <Link className='mt-5' to="/register">Don&apos;t have an account?</Link>
+                <Link className='link' to="/register">Don&apos;t have an account?</Link>
                 {error && <Alert msg={error} />}
             </section>
         </div>
     )
 }
 export default Login;
+
