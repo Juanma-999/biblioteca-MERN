@@ -27,10 +27,9 @@ const Dog = ({ dog }) => {
 			<Link to={`/users/${dog.user._id}`}>
 				<div className='flex justify-start books-center gap-x-2'>
 					<BiUserCircle className='text-indigo-500 text-2xl' />
-					<h2 className='my-1 hover:text-blue-500'>{dog.user.email}</h2>
+					<h2 className='my-1 hover:text-blue-500'>{dog.user.username}</h2>
 				</div>
 			</Link>
-            <h4 className='my-2 text-gray-500'>ID: {dog._id}</h4>
 			<div className='flex justify-between books-center gap-x-2 mt-4 p-4'>
 				<BiShow
 					className='text-3xl text-blue-800 hover:text-black cursor-pointer'

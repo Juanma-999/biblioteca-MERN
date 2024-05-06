@@ -1,5 +1,11 @@
 const getDogs = async () => {
-    const res = await fetch('/api/dogs')
+    const res = await fetch('/api/dogs', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    })
     const data = await res.json();
 
     if(!res.ok) {
@@ -8,6 +14,7 @@ const getDogs = async () => {
 
     return data;
 }
+
 
 const updateDog = async (_id, name, breed, age) => {
     if(!name || !breed || !age) {
@@ -31,5 +38,22 @@ const updateDog = async (_id, name, breed, age) => {
     return data;
 }
 
-export { getDogs, updateDog };
+const getDogsByUser = async (userId) => {
+    const res = await fetch(`/api/dogs/user/${userId}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    })
+    const data = await res.json();
+
+    if(!res.ok) {
+        throw Error(data.error);
+    }
+
+    return data;
+}
+
+
+export { getDogs, getDogsByUser, updateDog };
 

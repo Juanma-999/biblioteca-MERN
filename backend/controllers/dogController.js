@@ -5,13 +5,34 @@ import { User } from "../models/userModel.js";
 const getDogs = async (req, res) => {
     try {
         const dogs = await Dog.find({});
-        await Dog.populate(dogs, { path: 'user', select: 'email' });
+        await Dog.populate(dogs, { path: 'user', select: 'username' });
         return res.status(200).json({ dogs });
     } catch(error) {
         console.log(error.message);
         res.status(500).send({ message: error.message });
     }
 }
+
+
+const getDogsByUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const dogs = await Dog.find({ user: id });
+        await Dog.populate(dogs, { path: 'user', select: 'username' });
+        return res.status(200).json({
+            count: dogs.length,
+            data: dogs
+        });
+    } catch(error) {
+        console.log(error.message);
+        res.status(500).send({ message: error.message });
+    }
+}
+
 
 const getDogById = async (req, res) => {
     try {
@@ -93,4 +114,4 @@ const deleteDog = async (req, res) => {
     }
 }
 
-export { getDogById, getDogs, addDog, updateDog, deleteDog };
+export { getDogById, getDogsByUser, getDogs, addDog, updateDog, deleteDog };
