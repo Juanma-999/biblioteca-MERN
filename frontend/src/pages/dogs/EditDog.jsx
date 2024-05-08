@@ -16,9 +16,8 @@ const EditDog = () => {
 
     const handleUpdate = async () => {
         try {
-            const data = await updateDog(state._id, name, breed, age);
-            const updatedDogs = dogs.filter((dog) => dog._id !== state._id);
-            setDogs([...updatedDogs, data.dog]);
+            const { dog } = await updateDog(state._id, name, breed, age);
+            setDogs((prevDogs) => prevDogs.map((d) => (d._id === state._id ? dog : d)));
             navigate("/");
         } catch(error) {
             setError(error.message);
