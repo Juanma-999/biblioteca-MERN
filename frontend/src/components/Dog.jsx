@@ -10,47 +10,39 @@ const Dog = ({ dog }) => {
 	const [showDetail, setShowDetail] = useState(false);
 
     return (
-        <div
-        key={dog._id}
-        className='border-2 border-gray-500 rounded-lg size-56 px-4 py-4 m-4 relative hover:shadow-xl hover:border-indigo-500'
-        >
-			<div className='flex justify-start books-center gap-x-2'>
-				<FaDog className='text-indigo-500 text-2xl' />
-				<h2 className='my-1'>{dog.name}</h2>
-			</div>
-			<div className='flex justify-start books-center gap-x-2'>
-				<h2 className='my-1'>{dog.age} year(s) old</h2>
-			</div>
-            <div className='flex justify-start books-center gap-x-2'>
-                <h2 className='my-1'>{dog.breed}</h2>
-			</div>
-			<Link to={`/users/${dog.user._id}`}>
-				<div className='flex justify-start books-center gap-x-2'>
-					<BiUserCircle className='text-indigo-500 text-2xl' />
-					<h2 className='my-1 hover:text-blue-500'>{dog.user.username}</h2>
-				</div>
-			</Link>
-			<div className='flex justify-between books-center gap-x-2 mt-4 p-4'>
-				<BiShow
-					className='text-3xl text-blue-800 hover:text-black cursor-pointer'
-					onClick={() => setShowDetail(true)}
-				/>
-				<Link to="/edit" state={ dog }>
-					<AiOutlineEdit className='text-2xl text-yellow-500 hover:text-black'/>
-				</Link>
-				<button>
-					<MdOutlineDelete className='text-2xl text-red-500 hover:text-black'/>
-				</button>
-			</div>
-			{
-				showDetail && (
-					<DogDetail  dog={dog} onClose={() => setShowDetail(false)} />
-				)
-			}
+        <div key={dog._id} className='dog-card'>
+            <div className='flex justify-start items-center gap-x-2'>
+                <FaDog className='name' />
+                <h2 className='my-1 text-lg font-semibold'>{dog.name}</h2>
+            </div>
+            <div className='flex justify-start items-center gap-x-2'>
+                <h2 className='my-1 text-lg age'>{dog.age} year(s) old</h2>
+            </div>
+            <div className='flex justify-start items-center gap-x-2'>
+                <h2 className='my-1 breed'>{dog.breed}</h2>
+            </div>
+            <Link to={`/users/${dog.user._id}`}>
+                <div className='flex justify-start items-center gap-x-2'>
+                    <BiUserCircle className='text-indigo-500 text-2xl' />
+                    <h2 className='my-1 username'>{dog.user.username}</h2>
+                </div>
+            </Link>
+            <div className='action-icons'>
+                <BiShow className='text-3xl text-blue-800' onClick={() => setShowDetail(true)} />
+                <Link to="/edit" state={ dog }>
+                    <AiOutlineEdit className='edit-icon'/>
+                </Link>
+                <button>
+                    <MdOutlineDelete className='delete-icon'/>
+                </button>
+            </div>
+            {
+                showDetail && (
+                    <DogDetail  dog={dog} onClose={() => setShowDetail(false)} />
+                )
+            }
         </div>
     )
 }
 
-
 export default Dog;
-

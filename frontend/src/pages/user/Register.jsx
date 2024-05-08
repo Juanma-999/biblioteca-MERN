@@ -62,7 +62,7 @@ const Register = () => {
                     />
                     <button className='btn'>Register</button>
                 </form>
-                <Link className='mt-5' to="/login"> Already have an account?</Link>
+                <Link className='link' to="/login"> Already have an account?</Link>
                 {error && <Alert msg={error} />}
             </section>
         </div>

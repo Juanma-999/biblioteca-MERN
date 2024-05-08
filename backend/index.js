@@ -5,6 +5,7 @@ import usersRoutes from './routes/usersRoutes.js';
 import dogsRoutes from './routes/dogsRoutes.js';
 import cors from 'cors';
 import 'dotenv/config.js';
+import walksRoutes from "./routes/walksRoutes.js";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', usersRoutes);
 app.use('/api/dogs', dogsRoutes);
+app.use('/api/walks', walksRoutes);
 
 mongoose
 .connect(uri)
