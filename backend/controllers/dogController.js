@@ -8,7 +8,8 @@ const getDogs = async (req, res) => {
             path: 'user',
             select: {
                 username: 1,
-                _id: 1
+                _id: 1,
+                email: 1,
             }
         });
         return res.status(200).json({ dogs });
@@ -18,7 +19,6 @@ const getDogs = async (req, res) => {
     }
 }
 
-
 const getDogsByUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -26,8 +26,14 @@ const getDogsByUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const dogs = await Dog.find({ user: id });
-        await Dog.populate(dogs, { path: 'user', select: 'username' });
+        const dogs = await Dog.find({ user: id }).populate({
+            path: 'user',
+            select: {
+                username: 1,
+                _id: 1,
+                email: 1,
+            }
+        });
         return res.status(200).json({
             count: dogs.length,
             data: dogs

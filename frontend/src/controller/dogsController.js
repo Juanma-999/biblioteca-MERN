@@ -40,6 +40,7 @@ const getDogsByUser = async (userId) => {
     const res = await fetch(`/api/dogs/user/${userId}`, {
         method: 'GET',
         headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
     })

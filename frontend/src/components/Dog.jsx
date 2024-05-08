@@ -27,15 +27,18 @@ const Dog = ({ dog }) => {
                     <h2 className='my-1 username'>{dog.user.username}</h2>
                 </div>
             </Link>
-            <div className='action-icons'>
-                <BiShow className='text-3xl text-blue-800' onClick={() => setShowDetail(true)} />
-                <Link to="/edit" state={ dog }>
-                    <AiOutlineEdit className='edit-icon'/>
-                </Link>
-                <button>
-                    <MdOutlineDelete className='delete-icon'/>
-                </button>
-            </div>
+            {
+                dog.user.email === localStorage.getItem('email') &&
+                <div className='action-icons'>
+                    <BiShow className='text-3xl text-blue-800' onClick={() => setShowDetail(true)} />
+                    <Link to="/edit" state={ dog }>
+                        <AiOutlineEdit className='edit-icon'/>
+                    </Link>
+                    <button>
+                        <MdOutlineDelete className='delete-icon'/>
+                    </button>
+                </div>
+            }
             {
                 showDetail && (
                     <DogDetail  dog={dog} onClose={() => setShowDetail(false)} />

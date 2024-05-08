@@ -6,7 +6,8 @@ const getUserById = async(id) => {
     const res = await fetch(`/api/users/${id}`, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         }
     });
 
@@ -39,6 +40,7 @@ const loginUser = async(email, password) => {
 
     localStorage.setItem('token', data.token);
     localStorage.setItem('email', data.email);
+    localStorage.setItem('id', data._id);
 
     return data;
 }

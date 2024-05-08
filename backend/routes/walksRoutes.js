@@ -1,13 +1,14 @@
 import express from 'express';
 import { getWalks, getWalkById, getWalksByUser, addWalk, updateWalk, deleteWalk } from '../controllers/walkController.js';
+import auth from '../middlewares/auth.js';
 
-const walksRoutes = express.Router();
+const router = express.Router();
 
-walksRoutes.get('/', getWalks);
-walksRoutes.get('/user/:id', getWalksByUser);
-walksRoutes.post('/', addWalk);
-walksRoutes.get('/:id', getWalkById);
-walksRoutes.put('/:id', updateWalk);
-walksRoutes.delete('/:id', deleteWalk);
+router.get('/', auth, getWalks);
+router.get('/user/:id', auth, getWalksByUser);
+router.post('/', auth, addWalk);
+router.get('/:id', auth, getWalkById);
+router.put('/:id', auth, updateWalk);
+router.delete('/:id', auth, deleteWalk);
 
-export default walksRoutes;
+export default router;
