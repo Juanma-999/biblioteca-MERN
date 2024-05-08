@@ -2,15 +2,23 @@ import mongoose from "mongoose";
 import { User } from "../models/userModel.js";
 import { Walk } from "../models/walkModel.js";
 
-
 const getWalks = async (req, res) => {
     try {
-        const walks = await Walk.find();
+        const walks = await Walk.find().populate({
+            path: 'dogs',
+        }).populate({
+            path: 'user',
+            select: {
+                username: 1,
+                _id: 1
+            }
+        });
         return res.status(200).json(walks);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 }
+
 
 const getWalksByUser = async (req, res) => {
     try {

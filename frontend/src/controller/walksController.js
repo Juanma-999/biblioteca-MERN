@@ -1,3 +1,18 @@
+const getWalks = async () => {
+    const res = await fetch('/api/walks', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    })
+    const data = await res.json();
+    if(!res.ok) {
+        throw Error(data.error);
+    }
+    return data;
+}
+
 const getWalksByUser = async (userId) => {
     const res = await fetch(`/api/walks/user/${userId}`, {
         method: 'GET',
@@ -55,4 +70,4 @@ const updateWalk = async (id, walk) => {
     }
 }
 
-export { getWalksByUser, addWalk, deleteWalk, updateWalk };
+export { getWalks, getWalksByUser, addWalk, deleteWalk, updateWalk };

@@ -15,6 +15,10 @@ const walkSchema = mongoose.Schema(
         location: {
             type: String,
             require: true,
+        },
+        frequency: {
+            type: String,
+            require: true,
         }
     },
     {

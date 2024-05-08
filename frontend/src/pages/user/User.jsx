@@ -85,15 +85,15 @@ const User = ({ match }) => {
               <b>Email:</b> {user.email}
             </p>
             <h2 className="title my-1">Dogs owned by {user.username}:</h2>
-            <div className="dog-container">
+            <div className="container">
               {dogs && dogs.map((dog) => (
                 <div key={dog._id}>
                   <Dog dog={dog} />
                 </div>
               ))}
             </div>
-            <h2 className="title my-1">Walks taken by {user.username}:</h2>
-            <div className="walk-container">
+            <h2 className="title my-1">Walks published by {user.username}:</h2>
+            <div className="container">
               {walks && walks.map((walk) => (
                 <div key={walk._id}>
                   <Walk walk={walk}/>

@@ -1,13 +1,13 @@
 import { useContext, useState, useEffect } from "react";
-import { getDogs } from "../controller/dogsController";
-import { DogContext } from "../context/DogContext";
-import Dog from "../components/Dog";
+import { getWalks } from "../controller/walksController";
+import { WalksContext } from "../context/WalksContext";
+import Walk from "../components/Walk";
 import { FaSpinner } from "react-icons/fa";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-    const { dogs, setDogs } = useContext(DogContext);
+    const { walks, setWalks } = useContext(WalksContext);
     const [loading, setLoading] = useState(true);
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
@@ -15,17 +15,27 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await getDogs();
-                setDogs(data.dogs);
+                const data = await getWalks();
+                console.log('data:', data);
+                const walksData = data.map((walk) => {
+                    return {
+                        ...walk,
+                        dogs: walk.dogs.map((dog) => ({
+                            ...dog,
+                            user: walk.user._id
+                        }))
+                    };
+                });
+                setWalks(walksData);
                 setLoading(false);
             } catch (error) {
-                console.error("Error fetching dogs:", error);
+                console.error("Error fetching walks:", error);
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, [setDogs]);
+    }, [setWalks]);
 
     if (loading) {
         return (
@@ -43,12 +53,10 @@ const Home = () => {
     return (
         <div className="flex justify-center">
             <section className="card">
-                <h1 className="title">Latest dogs</h1>
-                <div className="dog-container">
-                    {dogs && dogs.map((dog) => (
-                        <div key={dog._id}>
-                            <Dog dog={dog}/>
-                        </div>
+                <h1 className="title">Latest walks</h1>
+                <div className="container">
+                    {walks && walks.map((walk) => (
+                        <Walk key={walk._id} walk={walk}/>
                     ))}
                 </div>
             </section>
@@ -56,4 +64,7 @@ const Home = () => {
     );
 };
 
+
 export default Home;
+
+

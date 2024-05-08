@@ -7,11 +7,9 @@ const getDogs = async () => {
         },
     })
     const data = await res.json();
-
     if(!res.ok) {
         throw Error(data.error);
     }
-
     return data;
 }
 

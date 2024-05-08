@@ -33,7 +33,7 @@
     .nav-link:hover {
         @apply underline
     }
-    .dog-container {
+    .container {
         @apply flex flex-row flex-wrap
     }
     .dog-card {

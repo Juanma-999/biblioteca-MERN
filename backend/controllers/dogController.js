@@ -4,8 +4,13 @@ import { User } from "../models/userModel.js";
 
 const getDogs = async (req, res) => {
     try {
-        const dogs = await Dog.find({});
-        await Dog.populate(dogs, { path: 'user', select: 'username' });
+        const dogs = await Dog.find({}).populate({
+            path: 'user',
+            select: {
+                username: 1,
+                _id: 1
+            }
+        });
         return res.status(200).json({ dogs });
     } catch(error) {
         console.log(error.message);
