@@ -13,6 +13,21 @@ const getDogs = async () => {
     return data;
 }
 
+const deleteDog = async (_id) => {
+    const res = await fetch(`/api/dogs/${_id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    })
+    const data = await res.json();
+    if(!res.ok) {
+        throw Error(data.error);
+    }
+    return data;
+}
+
 const getDog = async (_id) => {
     const res = await fetch(`/api/dogs/${_id}`, {
         method: 'GET',
@@ -93,5 +108,5 @@ const addDog = async (name, breed, age, userId ) => {
 }
 
 
-export { getDog, addDog, getDogs, getDogsByUser, updateDog };
+export { deleteDog, getDog, addDog, getDogs, getDogsByUser, updateDog };
 

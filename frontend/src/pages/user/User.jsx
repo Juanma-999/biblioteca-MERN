@@ -84,10 +84,10 @@ const User = () => {
             <p>
               <b>Email:</b> {user.email}
             </p>
-            <div>
+            <div className='flex flex-row justify-between'>
               <h2 className="title my-1">Dogs owned by {user.username}:</h2>
               <Link to={`/users/${user._id}/add-dog`}>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
                   Add Dog
                 </button>
               </Link>

@@ -5,6 +5,7 @@ import { MdOutlineDelete } from 'react-icons/md';
 import { useState } from 'react';
 import DogDetail from './DogDetail';
 import { Link } from 'react-router-dom';
+import { deleteDog } from '../controller/dogsController';
 
 const Dog = ({ dog }) => {
 	const [showDetail, setShowDetail] = useState(false);
@@ -34,7 +35,7 @@ const Dog = ({ dog }) => {
                     <Link to="/edit" state={ dog }>
                         <AiOutlineEdit className='edit-icon'/>
                     </Link>
-                    <button>
+                    <button onClick={() => deleteDog(dog._id)}>
                         <MdOutlineDelete className='delete-icon'/>
                     </button>
                 </div>
