@@ -61,12 +61,10 @@ const getDogById = async (req, res) => {
 
 const addDog = async (req, res) => {
     try {
-        if(!req.body.name || !req.body.age || !req.body.breed) {
-            return res.status(400).send({
-                message: 'Dog added succesfully',
-            })
+        if (!req.body.name || !req.body.age || !req.body.breed) {
+            return res.status(400).send({ message: 'Name, age, and breed are required fields' });
         }
-        const user = await User.findById(req.user._id).select("_id");
+        const user = await User.findById(req.user).select("_id");
         const newDog = {
             user: user,
             name: req.body.name,
@@ -74,10 +72,10 @@ const addDog = async (req, res) => {
             breed: req.body.breed,
         };
         const dog = await Dog.create(newDog);
-        return res.status(201).send(dog);
-    } catch(error) {
-        console.log(error);
-        res.status(500).send({ message: error.message});
+        return res.status(201).send({ success: true, data: dog });
+    } catch (error) {
+        console.error('Error adding dog:', error);
+        res.status(500).send({ success: false, message: 'Failed to add dog', error: error.message });
     }
 }
 

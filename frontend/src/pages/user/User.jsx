@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getUserById } from "../../controller/usersController";
 import { getWalksByUser } from '../../controller/walksController';
 import { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import Dog from "../../components/Dog";
 import Walk from "../../components/Walk";
 import { FaSpinner } from 'react-icons/fa';
 
-const User = ({ match }) => {
+const User = () => {
   const { id } = useParams();
   const [user, setUser] = useState(null);
   const [dogs, setDogs] = useState([]);
@@ -84,7 +84,14 @@ const User = ({ match }) => {
             <p>
               <b>Email:</b> {user.email}
             </p>
-            <h2 className="title my-1">Dogs owned by {user.username}:</h2>
+            <div>
+              <h2 className="title my-1">Dogs owned by {user.username}:</h2>
+              <Link to={`/users/${user._id}/add-dog`}>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  Add Dog
+                </button>
+              </Link>
+            </div>
             <div className="container">
               {dogs && dogs.map((dog) => (
                 <div key={dog._id}>
@@ -109,4 +116,5 @@ const User = ({ match }) => {
 
 
 export default User
+
 

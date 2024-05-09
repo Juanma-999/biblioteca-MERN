@@ -1,30 +1,34 @@
-import { useState } from "react";
-import { useLocation,  useNavigate } from "react-router-dom";
-import { updateDog } from "../../controller/dogsController";
+import { useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { addDog } from "../../controller/dogsController";
+import { DogContext } from "../../context/DogContext";
 import Alert from "../../components/Alert";
 
-const EditDog = () => {
+const AddDog = () => {
+    const { setDogs } = useContext(DogContext);
     const navigate = useNavigate();
-    const { state } = useLocation();
     const [error, setError] = useState(null);
 
-    const [name, setName] = useState(state.name);
-    const [breed, setBreed] = useState(state.breed);
-    const [age, setAge] = useState(state.age);
+    const [name, setName] = useState("");
+    const [breed, setBreed] = useState("");
+    const [age, setAge] = useState(0);
 
-    const handleUpdate = async () => {
-        try {
-            const { dog } = await updateDog(state._id, name, breed, age);
-            navigate("/");
-        } catch(error) {
-            setError(error.message);
-        }
-    };
+    const { userId } = useParams();
+
+        const handleSubmit = async () => {
+            try {
+                const data = await addDog(name, breed, age, userId);
+                setDogs((prevDogs) => [...prevDogs, data.dog]);
+                navigate(`/users/${userId}`);
+            } catch(error) {
+                setError(error.message);
+            }
+        };
 
     return (
         <div className="flex justify-center">
             <section className="card">
-                <h1 className="text-3xl my-4">Edit dog</h1>
+                <h1 className="text-3xl my-4">Add dog</h1>
                 <div className="my-4">
                     <label className="text-xl mr-4 text-gray-500">Name</label>
                     <input
@@ -52,14 +56,15 @@ const EditDog = () => {
                         className="border-2 border-gray-500 px-4 py-2 w-full"
                     />
                 </div>
-                <button className="p-2 bg-sky-300 m-8" onClick={handleUpdate}>
-                    Save
-                </button>
-                {error && <Alert msg={error} />}
+                <div className="my-4">
+                    <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add dog</button>
+                </div>
+                {error && <Alert type="error" message={error} />}
             </section>
         </div>
-    )
-}
+    );
+};
 
-export default EditDog;
+
+export default AddDog;
 

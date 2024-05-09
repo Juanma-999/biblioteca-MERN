@@ -28,19 +28,19 @@ const getWalksByUser = async (userId) => {
 }
 
 const addWalk = async (walk) => {
-    try {
-        const response = await fetch('/api/walks', {
+        const res = await fetch('/api/walks', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             body: JSON.stringify(walk)
         });
-        const newWalk = await response.json();
-        return newWalk;
-    } catch (error) {
-        console.error(error.message);
-    }
+        const data = await res.json();
+        if(!res.ok) {
+        throw Error(data.error);
+        }
+        return data;
 }
 
 const deleteWalk = async (id) => {
