@@ -40,9 +40,11 @@ const loginUser = async(email, password) => {
 
     localStorage.setItem('token', data.token);
     localStorage.setItem('email', data.email);
-    localStorage.setItem('id', data._id);
 
-    return data;
+    const base64Url = data.token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    const parsedToken = JSON.parse(window.atob(base64));
+    localStorage.setItem('userId', parsedToken._id);
 }
 
 const registerUser = async(email, username, password, confirmPassword) => {

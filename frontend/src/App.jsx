@@ -5,6 +5,7 @@ import Register from './pages/user/Register';
 import Home from './pages/Home';
 import EditDog from './pages/dogs/EditDog';
 import User from './pages/user/User';
+import AddDog from './pages/dogs/AddDog';
 
 const App = () => {
   return <BrowserRouter>
@@ -15,6 +16,7 @@ const App = () => {
         <Route path='register' element={<Register />} />
         <Route path='edit' element={<EditDog />} />
         <Route path='users/:id' element={<User />} />
+        <Route path='users/:userId/add-dog' element={<AddDog />} />
       </ Route>
     </Routes>
   </BrowserRouter>

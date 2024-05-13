@@ -53,7 +53,7 @@ const Home = () => {
     return (
         <div className="flex justify-center">
             <section className="card">
-                <h1 className="title">Latest walks</h1>
+                <h1 className="title">Latest walks:</h1>
                 <div className="container">
                     {walks && walks.map((walk) => (
                         <Walk key={walk._id} walk={walk}/>

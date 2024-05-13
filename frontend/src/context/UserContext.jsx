@@ -6,6 +6,7 @@ const UserProvider = ({ children }) => {
     const [user, setUser] = useState({
         email: localStorage.getItem("email"),
         token: localStorage.getItem("token"),
+        id: localStorage.getItem("id"),
     });
 
     return <UserContext.Provider value={{ user, setUser }}>

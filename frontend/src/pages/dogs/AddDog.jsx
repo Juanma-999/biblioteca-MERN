@@ -1,11 +1,9 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addDog } from "../../controller/dogsController";
-import { DogContext } from "../../context/DogContext";
 import Alert from "../../components/Alert";
 
 const AddDog = () => {
-    const { setDogs } = useContext(DogContext);
     const navigate = useNavigate();
     const [error, setError] = useState(null);
 
@@ -18,7 +16,6 @@ const AddDog = () => {
         const handleSubmit = async () => {
             try {
                 const data = await addDog(name, breed, age, userId);
-                setDogs((prevDogs) => [...prevDogs, data.dog]);
                 navigate(`/users/${userId}`);
             } catch(error) {
                 setError(error.message);

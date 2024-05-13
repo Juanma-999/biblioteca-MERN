@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { getUserById } from "../../controller/usersController";
 import { getWalksByUser } from '../../controller/walksController';
 import { useEffect, useState } from "react";
-import { getDogsByUser } from "../../controller/dogsController";
+import { deleteDog, getDogsByUser } from "../../controller/dogsController";
 import Dog from "../../components/Dog";
 import Walk from "../../components/Walk";
 import { FaSpinner } from 'react-icons/fa';
@@ -13,56 +13,28 @@ const User = () => {
   const [dogs, setDogs] = useState([]);
   const [walks, setWalks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [dogToDelete, setDogToDelete] = useState(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
         const userInfo = await getUserById(id);
         setUser(userInfo);
+        const dogsInfo = await getDogsByUser(id);
+        setDogs(dogsInfo.data);
+        const walksInfo = await getWalksByUser(id);
+        setWalks(walksInfo.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching user:', error);
+        setError(error.message);
         setLoading(false);
       }
     };
 
-    fetchUser();
-  }, [id]);
-
-  useEffect(() => {
-    const fetchDogsByUser = async () => {
-      try {
-        const response = await getDogsByUser(id);
-        console.log("response.data: ", response.data);
-        setDogs(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching dogs:', error);
-        setLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchDogsByUser();
-    }
-  }, [id]);
-
-  useEffect(() => {
-    const fetchWalksByUser = async () => {
-      try {
-        const response = await getWalksByUser(id);
-        console.log("response.data: ", response.data);
-        setWalks(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching walks:', error);
-        setLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchWalksByUser();
-    }
+    fetchData();
   }, [id]);
 
   if (loading) {
@@ -73,48 +45,97 @@ const User = () => {
     );
   }
 
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  const handleDeleteDog = (dogId) => {
+    // Check if the dog is in any walk
+    const isInWalk = walks.some(walk => walk.dogs.includes(dogId));
+    if (isInWalk) {
+      // Show modal or handle accordingly (e.g., display a message)
+      console.log("Cannot delete dog. Dog is in a walk.");
+      return;
+    }
+    // Filter out dogs that are in walks
+    const deletableDogs = dogs.filter(dog => !walks.some(walk => walk.dogs.includes(dog._id)));
+    const dogToDelete = deletableDogs.find(dog => dog._id === dogId);
+    // Proceed with deletion
+    setDogToDelete(dogToDelete._id);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    await deleteDog(dogToDelete);
+    setShowDeleteModal(false);
+    setDogToDelete(null);
+    const updatedDogs = dogs.filter(dog => dog._id !== dogToDelete);
+    setDogs(updatedDogs);
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setDogToDelete(null);
+  };
+
   return (
     <div className="flex justify-center">
       <section className="card">
-        {user && dogs && walks && (
-          <div>
-            <p>
-              <b>Username:</b> {user.username}
-            </p>
-            <p>
-              <b>Email:</b> {user.email}
-            </p>
-            <div className='flex flex-row justify-between'>
-              <h2 className="title my-1">Dogs owned by {user.username}:</h2>
-              <Link to={`/users/${user._id}/add-dog`}>
-                <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-                  Add Dog
-                </button>
-              </Link>
-            </div>
-            <div className="container">
-              {dogs && dogs.map((dog) => (
-                <div key={dog._id}>
-                  <Dog dog={dog} />
-                </div>
-              ))}
-            </div>
-            <h2 className="title my-1">Walks published by {user.username}:</h2>
-            <div className="container">
-              {walks && walks.map((walk) => (
-                <div key={walk._id}>
-                  <Walk walk={walk}/>
-                </div>
-              ))}
+        <div>
+          <p>
+            <b>Username:</b> {user.username}
+          </p>
+          <p>
+            <b>Email:</b> {user.email}
+          </p>
+          <div className='flex flex-row justify-between'>
+            <h2 className="title my-1">Dogs owned by {user.username}:</h2>
+            {
+              id === localStorage.getItem("userId") && (
+                <Link to={`/users/${user._id}/add-dog`}>
+                  <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                    Add Dog
+                  </button>
+                </Link>
+              )
+            }
+          </div>
+          <div className="container">
+            {dogs.map((dog) => (
+              <div key={dog._id}>
+                <Dog dog={dog} onDelete={() => handleDeleteDog(dog._id)}/>
+              </div>
+            ))}
+          </div>
+          <h2 className="title my-1">Walks published by {user.username}:</h2>
+          <div className="container">
+            {walks.map((walk) => (
+              <div key={walk._id}>
+                <Walk walk={walk}/>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {
+        showDeleteModal && (
+          <div className="fixed inset-0 w-full h-full z-50 bg-gray-700 bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-8 rounded-md">
+              <h2 className="text-2xl">Delete dog?</h2>
+              <p>
+                Are you sure you want to delete this dog?
+              </p>
+              <div className="flex justify-end">
+                <button className="mr-4" onClick={handleDeleteCancel}>Cancel</button>
+                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={handleDeleteConfirm}>Confirm</button>
+              </div>
             </div>
           </div>
-        )}
-      </section>
+        )
+      }
     </div>
   );
 };
 
 
-export default User
-
-
+export default User;
