@@ -2,9 +2,14 @@ import { BiUserCircle } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import DogDetail from './DogDetail';
 import { useState } from 'react';
+import { MdOutlineDelete } from 'react-icons/md';
 
-const Walk = ({ walk }) => {
+const Walk = ({ walk, onDelete }) => {
     const [showDetail, setShowDetail] = useState(false);
+
+    const handleDelete = () => {
+        onDelete();
+    };
 
     return (
         <div key={walk._id} className="dog-card">
@@ -29,12 +34,17 @@ const Walk = ({ walk }) => {
                         </div>
                     ))}
                 </div>
+                {
+                    walk.user._id === localStorage.getItem('userId') &&
+                    <div className='action-icons'>
+                        <button onClick={handleDelete}>
+                            <MdOutlineDelete className='delete-icon'/>
+                        </button>
+                    </div>
+                }
         </div>
     )
 }
-
-
-
 
 export default Walk;
 

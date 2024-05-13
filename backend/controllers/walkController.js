@@ -28,7 +28,14 @@ const getWalksByUser = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
         const walks = await Walk.find({ user: id }).populate('dogs');
-        await Walk.populate(walks, { path: 'user', select: 'username' });
+        await Walk.populate(walks, {
+            path: 'user',
+            select: {
+                username: 1,
+                _id: 1,
+                email: 1
+            }
+        });
         return res.status(200).json({
             count: walks.length,
             data: walks

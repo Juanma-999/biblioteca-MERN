@@ -43,15 +43,19 @@ const addWalk = async (walk) => {
         return data;
 }
 
-const deleteWalk = async (id) => {
-    try {
-        const response = await fetch(`/api/walks/${id}`, {
-            method: 'DELETE'
-        });
-        return response.status;
-    } catch (error) {
-        console.error(error.message);
+const deleteWalk = async (_id) => {
+    const res = await fetch(`/api/walks/${_id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    })
+    const data = await res.json();
+    if(!res.ok) {
+        throw Error(data.error);
     }
+    return data;
 }
 
 const updateWalk = async (id, walk) => {

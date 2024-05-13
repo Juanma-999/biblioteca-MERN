@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { getUserById } from "../../controller/usersController";
-import { getWalksByUser } from '../../controller/walksController';
+import { deleteWalk, getWalksByUser } from '../../controller/walksController';
 import { useEffect, useState } from "react";
 import { deleteDog, getDogsByUser } from "../../controller/dogsController";
 import Dog from "../../components/Dog";
@@ -49,19 +49,14 @@ const User = () => {
     return <div>Error: {error}</div>;
   }
 
+  const handleDeleteWalk = async (walkId) => {
+    await deleteWalk(walkId);
+    const updatedWalks = walks.filter(walk => walk._id !== walkId);
+    setWalks(updatedWalks);
+  };
+
   const handleDeleteDog = (dogId) => {
-    // Check if the dog is in any walk
-    const isInWalk = walks.some(walk => walk.dogs.includes(dogId));
-    if (isInWalk) {
-      // Show modal or handle accordingly (e.g., display a message)
-      console.log("Cannot delete dog. Dog is in a walk.");
-      return;
-    }
-    // Filter out dogs that are in walks
-    const deletableDogs = dogs.filter(dog => !walks.some(walk => walk.dogs.includes(dog._id)));
-    const dogToDelete = deletableDogs.find(dog => dog._id === dogId);
-    // Proceed with deletion
-    setDogToDelete(dogToDelete._id);
+    setDogToDelete(dogId);
     setShowDeleteModal(true);
   };
 
@@ -111,7 +106,7 @@ const User = () => {
           <div className="container">
             {walks.map((walk) => (
               <div key={walk._id}>
-                <Walk walk={walk}/>
+                <Walk walk={walk} onDelete={() => handleDeleteWalk(walk._id)}/>
               </div>
             ))}
           </div>
