@@ -14,7 +14,9 @@ const User = () => {
   const [walks, setWalks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showDeleteWalkModal, setShowDeleteWalkModal] = useState(false);
+  const [showDeleteDogModal, setShowDeleteDogModal] = useState(false);
+  const [walkToDelete, setWalkToDelete] = useState(null);
   const [dogToDelete, setDogToDelete] = useState(null);
 
   useEffect(() => {
@@ -49,27 +51,36 @@ const User = () => {
     return <div>Error: {error}</div>;
   }
 
-  const handleDeleteWalk = async (walkId) => {
-    await deleteWalk(walkId);
-    const updatedWalks = walks.filter(walk => walk._id !== walkId);
-    setWalks(updatedWalks);
+  const handleDeleteWalk = (walkId) => {
+    setWalkToDelete(walkId);
+    setShowDeleteWalkModal(true);
   };
 
   const handleDeleteDog = (dogId) => {
     setDogToDelete(dogId);
-    setShowDeleteModal(true);
+    setShowDeleteDogModal(true);
   };
 
   const handleDeleteConfirm = async () => {
-    await deleteDog(dogToDelete);
-    setShowDeleteModal(false);
+    if (walkToDelete) {
+      await deleteWalk(walkToDelete);
+      const updatedWalks = walks.filter(walk => walk._id !== walkToDelete);
+      setWalks(updatedWalks);
+    } else {
+      await deleteDog(dogToDelete);
+      const updatedDogs = dogs.filter(dog => dog._id !== dogToDelete);
+      setDogs(updatedDogs);
+    }
+    setShowDeleteWalkModal(false);
+    setShowDeleteDogModal(false);
+    setWalkToDelete(null);
     setDogToDelete(null);
-    const updatedDogs = dogs.filter(dog => dog._id !== dogToDelete);
-    setDogs(updatedDogs);
   };
 
   const handleDeleteCancel = () => {
-    setShowDeleteModal(false);
+    setShowDeleteWalkModal(false);
+    setShowDeleteDogModal(false);
+    setWalkToDelete(null);
     setDogToDelete(null);
   };
 
@@ -88,7 +99,7 @@ const User = () => {
             {
               id === localStorage.getItem("userId") && (
                 <Link to={`/users/${user._id}/add-dog`}>
-                  <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                  <button className="indigo-button">
                     Add Dog
                   </button>
                 </Link>
@@ -102,7 +113,18 @@ const User = () => {
               </div>
             ))}
           </div>
-          <h2 className="title my-1">Walks published by {user.username}:</h2>
+          <div className='flex flex-row justify-between'>
+            <h2 className="title my-1">Walks published by {user.username}:</h2>
+            {
+              id === localStorage.getItem("userId") && (
+                <Link to={`/users/${user._id}/add-walk`}>
+                  <button className="indigo-button">
+                    Add Walk
+                  </button>
+                </Link>
+              )
+            }
+          </div>
           <div className="container">
             {walks.map((walk) => (
               <div key={walk._id}>
@@ -113,16 +135,24 @@ const User = () => {
         </div>
       </section>
       {
-        showDeleteModal && (
-          <div className="fixed inset-0 w-full h-full z-50 bg-gray-700 bg-opacity-50 flex items-center justify-center">
+        (showDeleteWalkModal || showDeleteDogModal) && (
+          <div className={`fixed inset-0 w-full h-full z-50 bg-gray-700 bg-opacity-50 flex items-center justify-center ${showDeleteWalkModal || showDeleteDogModal ? "block" : "hidden"}`}>
             <div className="bg-white p-8 rounded-md">
-              <h2 className="text-2xl">Delete dog?</h2>
+              <h2 className="text-2xl">{walkToDelete ? "Delete walk?" : "Delete dog?"}</h2>
               <p>
-                Are you sure you want to delete this dog?
+                {walkToDelete ? (
+                  <p>
+                    Are you sure you want to delete this walk?
+                  </p>
+                ) : (
+                  <p>
+                    Are you sure you want to delete this dog?
+                  </p>
+                )}
               </p>
               <div className="flex justify-end">
                 <button className="mr-4" onClick={handleDeleteCancel}>Cancel</button>
-                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={handleDeleteConfirm}>Confirm</button>
+                <button className="red-button" onClick={handleDeleteConfirm}>Confirm</button>
               </div>
             </div>
           </div>
@@ -131,6 +161,5 @@ const User = () => {
     </div>
   );
 };
-
 
 export default User;

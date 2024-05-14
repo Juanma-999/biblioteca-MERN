@@ -39,6 +39,12 @@
     .dog-card {
         @apply border-2 border-gray-500 rounded-lg size-64 px-4 py-4 m-4 relative hover:shadow-xl hover:border-indigo-500;
     }
+    .indigo-button {
+        @apply bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded;
+    }
+    .red-button {
+        @apply bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded
+    }
 
     .dog-card .name {
         @apply text-indigo-500 text-2xl;

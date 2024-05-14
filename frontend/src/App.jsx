@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import EditDog from './pages/dogs/EditDog';
 import User from './pages/user/User';
 import AddDog from './pages/dogs/AddDog';
+import AddWalk from './pages/walks/AddWalk';
 
 const App = () => {
   return <BrowserRouter>
@@ -17,6 +18,7 @@ const App = () => {
         <Route path='edit' element={<EditDog />} />
         <Route path='users/:id' element={<User />} />
         <Route path='users/:userId/add-dog' element={<AddDog />} />
+        <Route path='/users/:userId/add-walk' element={<AddWalk />} />
       </ Route>
     </Routes>
   </BrowserRouter>
