@@ -67,11 +67,12 @@ const addWalk = async (req, res) => {
                 message: 'Walk added succesfully',
             })
         }
-        const user = await User.findById(req.user._id).select("_id");
+        const user = await User.findById(req.user).select("_id");
         const newWalk = {
             user: user,
             dogs: req.body.dogs,
             location: req.body.location,
+            frequency: req.frequency
         };
         const walk = await Walk.create(newWalk);
         return res.status(201).send(walk);

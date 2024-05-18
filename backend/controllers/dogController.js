@@ -38,11 +38,11 @@ const getDogsByUser = async (req, res) => {
             count: dogs.length,
             data: dogs
         });
-    } catch(error) {
+    } catch (error) {
         console.log(error.message);
         res.status(500).send({ message: error.message });
     }
-}
+};
 
 
 const getDogById = async (req, res) => {
