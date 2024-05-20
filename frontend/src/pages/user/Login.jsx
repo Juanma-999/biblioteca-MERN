@@ -1,15 +1,13 @@
 import { useContext, useState } from "react";
-import Alert from "../../components/Alert";
 import { loginUser } from "../../controller/usersController";
 import { UserContext } from "../../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const { setUser } = useContext(UserContext);
-
     const navigate = useNavigate();
-
-    const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -21,8 +19,11 @@ const Login = () => {
             await loginUser(formData.email, formData.password);
             setUser({ email: formData.email });
             navigate('/');
-        } catch(error) {
-            setError(error.message);
+        } catch(e) {
+            toast.error(e.message, {
+                position: "top-right",
+                autoClose: 5000,
+            });
         }
     };
 
@@ -51,7 +52,6 @@ const Login = () => {
                     </button>
                 </form>
                 <Link className='link' to="/register">Don&apos;t have an account?</Link>
-                {error && <Alert msg={error} />}
             </section>
         </div>
     )

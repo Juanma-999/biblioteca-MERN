@@ -1,27 +1,31 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Alert from "../../components/Alert";
 import { getDogsByUser } from "../../controller/dogsController";
 import Picklist from "../../components/Picklist";
 import { addWalk } from "../../controller/walksController";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateWalk = () => {
     const navigate = useNavigate();
     const { userId } = useParams();
-    const [error, setError] = useState("");
     const [location, setLocation] = useState("");
     const [frequency, setFrequency] = useState("");
     const [dogs, setDogs] = useState([]);
     const [picklists, setPicklists] = useState([{ selectedDog: "" }]);
     const [selectedDogs, setSelectedDogs] = useState([]);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         const fetchDogs = async () => {
             try {
                 const response = await getDogsByUser(userId);
                 setDogs(response.data);
-            } catch (error) {
-                setError("Failed to fetch dogs.");
+            } catch (e) {
+                toast.error(e.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                });
             }
         };
 
@@ -60,8 +64,12 @@ const CreateWalk = () => {
 
         const newSelectedDogs = [...selectedDogs];
         newSelectedDogs[index] = value;
-        setSelectedDogs(newSelectedDogs.filter(dogId => dogId)); // Filter out any empty values
+        setSelectedDogs(newSelectedDogs.filter(dogId => dogId));
     };
+
+    if (error) {
+        return <div className="text-red-500">{error}</div>;
+    }
 
     return (
         <div className="flex justify-center">
@@ -101,7 +109,6 @@ const CreateWalk = () => {
                         Save
                     </button>
                 </form>
-                {error && <Alert msg={error} />}
             </section>
         </div>
     );

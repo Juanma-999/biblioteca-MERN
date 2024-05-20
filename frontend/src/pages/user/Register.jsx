@@ -1,13 +1,13 @@
 import { useContext, useState } from "react";
-import Alert from "../../components/Alert";
 import { registerUser } from "../../controller/usersController";
 import { UserContext } from "../../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
     const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
-    const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -21,8 +21,11 @@ const Register = () => {
             await registerUser(formData.username, formData.email, formData.password, formData.confirmPassword);
             setUser({ email: formData.email });
             navigate('/');
-        } catch(error) {
-            setError(error.message);
+        } catch(e) {
+            toast.error(e.message, {
+                position: "top-right",
+                autoClose: 5000,
+            });
         }
     };
 
@@ -63,7 +66,6 @@ const Register = () => {
                     <button className='btn'>Register</button>
                 </form>
                 <Link className='link' to="/login"> Already have an account?</Link>
-                {error && <Alert msg={error} />}
             </section>
         </div>
     )

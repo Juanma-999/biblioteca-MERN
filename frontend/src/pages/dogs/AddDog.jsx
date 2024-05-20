@@ -1,26 +1,29 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addDog } from "../../controller/dogsController";
-import Alert from "../../components/Alert";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddDog = () => {
     const navigate = useNavigate();
-    const [error, setError] = useState(null);
     const [name, setName] = useState("");
     const [breed, setBreed] = useState("");
     const [age, setAge] = useState(0);
     const [description, setDescription] = useState("");
     const { userId } = useParams();
-    
+
     const handleSubmit = async () => {
         try {
-            const data = await addDog(name, breed, age, userId, description);
+            await addDog(name, breed, age, userId, description);
             navigate(`/users/${userId}`);
-        } catch(error) {
-            setError(error.message);
+        } catch(e) {
+            toast.error(e.message, {
+                position: "top-right",
+                autoClose: 5000,
+            });
         }
     };
-    
+
     return (
         <div className="flex justify-center">
         <section className="card">
@@ -64,7 +67,6 @@ const AddDog = () => {
         <div className="my-4">
         <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add dog</button>
         </div>
-        {error && <Alert type="error" message={error} />}
         </section>
         </div>
     );

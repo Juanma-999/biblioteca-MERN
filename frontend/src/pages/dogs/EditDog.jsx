@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useLocation,  useNavigate } from "react-router-dom";
 import { updateDog } from "../../controller/dogsController";
-import Alert from "../../components/Alert";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditDog = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
-    const [error, setError] = useState(null);
     const [name, setName] = useState(state.name);
     const [breed, setBreed] = useState(state.breed);
     const [age, setAge] = useState(state.age);
@@ -14,10 +14,13 @@ const EditDog = () => {
 
     const handleUpdate = async () => {
         try {
-            const { dog } = await updateDog(state._id, name, breed, age, description);
-            navigate("/");
-        } catch(error) {
-            setError(error.message);
+            await updateDog(state._id, name, breed, age, description);
+            navigate(`/users/${localStorage.getItem('userId')}`);
+        } catch(e) {
+            toast.error(e.message, {
+                position: "top-right",
+                autoClose: 5000,
+            });
         }
     };
 
@@ -64,7 +67,6 @@ const EditDog = () => {
                 <button className="p-2 bg-sky-300 m-8" onClick={handleUpdate}>
                     Save
                 </button>
-                {error && <Alert msg={error} />}
             </section>
         </div>
     )

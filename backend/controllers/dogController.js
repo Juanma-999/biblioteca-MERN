@@ -119,7 +119,7 @@ const deleteDog = async (req, res) => {
     }
     const walks = await Walk.find({ dogs: req.params.id });
     if (walks.length > 0) {
-        return res.status(400).json({ error: "This dog is included in one or more walks and cannot be deleted. Please delete the walks in which it is included before attempting to delete this dog" });
+        return res.status(400).json({ error: "Cannot delete a dog included in a walk" });
     }
     try {
         await Dog.deleteOne({ _id: req.params.id });
