@@ -6,16 +6,15 @@ import Alert from "../../components/Alert";
 const AddDog = () => {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
-    
     const [name, setName] = useState("");
     const [breed, setBreed] = useState("");
     const [age, setAge] = useState(0);
-    
+    const [description, setDescription] = useState("");
     const { userId } = useParams();
     
     const handleSubmit = async () => {
         try {
-            const data = await addDog(name, breed, age, userId);
+            const data = await addDog(name, breed, age, userId, description);
             navigate(`/users/${userId}`);
         } catch(error) {
             setError(error.message);
@@ -51,6 +50,15 @@ const AddDog = () => {
         value={age}
         onChange={(e) => setAge(e.target.value)}
         className="border-2 border-gray-500 px-4 py-2 w-full"
+        />
+        </div>
+        <div className="my-4">
+        <label className="text-xl mr-4 text-gray-500">Description</label>
+        <textarea
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        className="border-2 border-gray-500 px-4 py-4 w-full resize-none"
+        rows="5"
         />
         </div>
         <div className="my-4">

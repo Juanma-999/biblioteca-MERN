@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Dog } from "../models/dogModel.js";
 import { User } from "../models/userModel.js";
+import { Walk } from "../models/walkModel.js";
 
 const getDogs = async (req, res) => {
     try {
@@ -70,6 +71,7 @@ const addDog = async (req, res) => {
             name: req.body.name,
             age: req.body.age,
             breed: req.body.breed,
+            description: req.body.description
         };
         const dog = await Dog.create(newDog);
         return res.status(201).send({ success: true, data: dog });
@@ -80,7 +82,7 @@ const addDog = async (req, res) => {
 }
 
 const updateDog = async (req, res) => {
-    const { name, age, breed } = req.body;
+    const { name, age, breed, description } = req.body;
     if (!name || !age || !breed) {
         return res.status(400).json({ error: "Missing required fields" });
     }
@@ -96,7 +98,7 @@ const updateDog = async (req, res) => {
         return res.status(401).json({ error: "You do not own this dog" });
     }
     try {
-        await Dog.updateOne({ _id: req.params.id }, { name, age, breed });
+        await Dog.updateOne({ _id: req.params.id }, { name, age, breed, description });
         res.status(200).json({ success: "Dog updated", Dog });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -114,6 +116,10 @@ const deleteDog = async (req, res) => {
     const user = await User.findById(req.user._id);
     if (!dog.user.equals(user._id)) {
         return res.status(401).json({ error: "Not authorized" });
+    }
+    const walks = await Walk.find({ dogs: req.params.id });
+    if (walks.length > 0) {
+        return res.status(400).json({ error: "This dog is included in one or more walks and cannot be deleted. Please delete the walks in which it is included before attempting to delete this dog" });
     }
     try {
         await Dog.deleteOne({ _id: req.params.id });

@@ -6,6 +6,8 @@ import { deleteDog, getDogsByUser } from "../../controller/dogsController";
 import Dog from "../../components/Dog";
 import Walk from "../../components/Walk";
 import { FaSpinner } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const User = () => {
   const { id } = useParams();
@@ -13,11 +15,11 @@ const User = () => {
   const [dogs, setDogs] = useState([]);
   const [walks, setWalks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showDeleteWalkModal, setShowDeleteWalkModal] = useState(false);
   const [showDeleteDogModal, setShowDeleteDogModal] = useState(false);
   const [walkToDelete, setWalkToDelete] = useState(null);
   const [dogToDelete, setDogToDelete] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,11 +33,10 @@ const User = () => {
         setWalks(walksInfo.data);
         setLoading(false);
       } catch (error) {
-        setError(error.message);
         setLoading(false);
+        setError(error);
       }
     };
-
     fetchData();
   }, [id]);
 
@@ -47,8 +48,8 @@ const User = () => {
     );
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
+  if(error) {
+    return <div className='text-red-500'>{error}</div>;
   }
 
   const handleDeleteWalk = (walkId) => {
@@ -63,13 +64,41 @@ const User = () => {
 
   const handleDeleteConfirm = async () => {
     if (walkToDelete) {
-      await deleteWalk(walkToDelete);
-      const updatedWalks = walks.filter(walk => walk._id !== walkToDelete);
-      setWalks(updatedWalks);
+      try {
+        await deleteWalk(walkToDelete);
+        const updatedWalks = walks.filter(walk => walk._id !== walkToDelete);
+        setWalks(updatedWalks);
+      } catch (error) {
+        toast.error(error.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: "Bounce"
+        });
+      }
     } else {
-      await deleteDog(dogToDelete);
-      const updatedDogs = dogs.filter(dog => dog._id !== dogToDelete);
-      setDogs(updatedDogs);
+      try {
+        await deleteDog(dogToDelete);
+        const updatedDogs = dogs.filter(dog => dog._id !== dogToDelete);
+        setDogs(updatedDogs);
+      } catch (error) {
+        toast.error(error.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: "Bounce"
+        });
+      }
     }
     setShowDeleteWalkModal(false);
     setShowDeleteDogModal(false);
@@ -86,6 +115,7 @@ const User = () => {
 
   return (
     <div className="flex justify-center">
+    <ToastContainer />
       <section className="card">
         <div>
           <p>

@@ -11,6 +11,7 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,7 +30,7 @@ const Home = () => {
                 setWalks(walksData);
                 setLoading(false);
             } catch (error) {
-                console.error("Error fetching walks:", error);
+                setError(error.message);
                 setLoading(false);
             }
         };
@@ -48,6 +49,10 @@ const Home = () => {
     if (!user.email) {
         navigate('/login');
         return null;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
     }
 
     return (

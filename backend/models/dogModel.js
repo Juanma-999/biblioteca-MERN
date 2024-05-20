@@ -4,7 +4,7 @@ const dogSchema = mongoose.Schema(
     {
         user: {
             type: mongoose.Schema.Types.ObjectId,
-            required: true,
+            require: true,
             ref: "User"
         },
         name: {
@@ -19,6 +19,10 @@ const dogSchema = mongoose.Schema(
             type: Number,
             require: true,
         },
+        description: {
+            type: String,
+            require: false,
+        }
     },
     {
         timestamps: true,
@@ -26,3 +30,14 @@ const dogSchema = mongoose.Schema(
 );
 
 export const Dog = mongoose.model('Dog', dogSchema);
+
+
+
+
+
+
+
+
+
+
+

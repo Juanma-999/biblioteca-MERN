@@ -43,7 +43,7 @@ const getDog = async (_id) => {
     return data.dog;
 }
 
-const updateDog = async (_id, name, breed, age) => {
+const updateDog = async (_id, name, breed, age, description) => {
     if(!name || !breed || !age) {
         throw Error("Missing required fields");
     }
@@ -53,7 +53,7 @@ const updateDog = async (_id, name, breed, age) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({name, breed, age}),
+        body: JSON.stringify({name, breed, age, description}),
     })
 
     const data = await res.json();
@@ -82,7 +82,7 @@ const getDogsByUser = async (userId) => {
     return data;
 }
 
-const addDog = async (name, breed, age, userId ) => {
+const addDog = async (name, breed, age, userId, description ) => {
     console.log("addDog params:", {name, breed, age, userId });
     if(!name || !breed || !age ) {
         throw Error("Missing required fields");
@@ -93,7 +93,7 @@ const addDog = async (name, breed, age, userId ) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({name, breed, age, userId }),
+        body: JSON.stringify({name, breed, age, userId, description }),
     })
 
     console.log("addDog response:", res);
