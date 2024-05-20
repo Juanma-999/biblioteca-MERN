@@ -51,7 +51,7 @@ const Home = () => {
     }
 
     if(error) {
-        return <div className='text-red-500'>{error.message}</div>;
+        return <div className='text-red-500'>{error}</div>;
     }
 
     return (

@@ -62,23 +62,22 @@ const getWalkById = async (req, res) => {
 
 const addWalk = async (req, res) => {
     try {
-        if(!req.body.dogs || !req.body.location) {
-            return res.status(400).send({
-                message: 'Walk added succesfully',
-            })
+        const { dogs, location, frequency } = req.body;
+        if (!dogs || !location || !frequency) {
+            return res.status(400).json({ error: "Missing required fields" });
         }
         const user = await User.findById(req.user).select("_id");
         const newWalk = {
             user: user,
-            dogs: req.body.dogs,
-            location: req.body.location,
-            frequency: req.frequency
+            dogs,
+            location,
+            frequency,
         };
         const walk = await Walk.create(newWalk);
-        return res.status(201).send(walk);
+        return res.status(201).json(walk);
     } catch(error) {
         console.log(error);
-        res.status(500).send({ message: error.message});
+        res.status(500).json({ error: error.message });
     }
 }
 

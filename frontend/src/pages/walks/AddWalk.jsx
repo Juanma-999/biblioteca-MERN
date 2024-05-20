@@ -28,7 +28,6 @@ const CreateWalk = () => {
                 });
             }
         };
-
         if (userId) {
             fetchDogs();
         } else {
@@ -45,11 +44,13 @@ const CreateWalk = () => {
                 dogs: selectedDogs,
                 userId
             };
-
             await addWalk(walkData);
             navigate(`/users/${userId}`);
-        } catch (error) {
-            setError(error.message);
+        } catch (e) {
+            toast.error(e.message, {
+                position: "top-right",
+                autoClose: 5000,
+            });
         }
     };
 
