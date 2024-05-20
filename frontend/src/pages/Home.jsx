@@ -34,7 +34,6 @@ const Home = () => {
                 setLoading(false);
             }
         };
-
         fetchData();
     }, [setWalks]);
 
@@ -51,8 +50,8 @@ const Home = () => {
         return null;
     }
 
-    if (error) {
-        return <div>Error: {error}</div>;
+    if(error) {
+        return <div className='text-red-500'>{error.message}</div>;
     }
 
     return (

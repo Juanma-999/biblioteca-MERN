@@ -5,6 +5,8 @@ import './assets/app.css'
 import UserProvider from './context/UserContext.jsx'
 import DogProvider from './context/DogContext.jsx'
 import WalksProvider from './context/WalksContext.jsx'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -12,6 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <DogProvider>
         <UserProvider>
           <App />
+          <ToastContainer />
         </UserProvider>
       </DogProvider>
     </WalksProvider>

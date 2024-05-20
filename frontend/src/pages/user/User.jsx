@@ -6,7 +6,7 @@ import { deleteDog, getDogsByUser } from "../../controller/dogsController";
 import Dog from "../../components/Dog";
 import Walk from "../../components/Walk";
 import { FaSpinner } from 'react-icons/fa';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const User = () => {
@@ -37,6 +37,7 @@ const User = () => {
         setError(error);
       }
     };
+
     fetchData();
   }, [id]);
 
@@ -49,7 +50,7 @@ const User = () => {
   }
 
   if(error) {
-    return <div className='text-red-500'>{error}</div>;
+    return <div className='text-red-500'>{error.message}</div>;
   }
 
   const handleDeleteWalk = (walkId) => {
@@ -68,17 +69,10 @@ const User = () => {
         await deleteWalk(walkToDelete);
         const updatedWalks = walks.filter(walk => walk._id !== walkToDelete);
         setWalks(updatedWalks);
-      } catch (error) {
-        toast.error(error.message, {
+      } catch (e) {
+        toast.error(e.message, {
           position: "top-right",
           autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: "Bounce"
         });
       }
     } else {
@@ -86,17 +80,10 @@ const User = () => {
         await deleteDog(dogToDelete);
         const updatedDogs = dogs.filter(dog => dog._id !== dogToDelete);
         setDogs(updatedDogs);
-      } catch (error) {
-        toast.error(error.message, {
+      } catch (e) {
+        toast.error(e.message, {
           position: "top-right",
           autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: "Bounce"
         });
       }
     }
@@ -115,7 +102,6 @@ const User = () => {
 
   return (
     <div className="flex justify-center">
-    <ToastContainer />
       <section className="card">
         <div>
           <p>
