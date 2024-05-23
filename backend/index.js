@@ -3,6 +3,7 @@ import { PORT, uri } from "./config.js";
 import mongoose from "mongoose";
 import usersRoutes from './routes/usersRoutes.js';
 import dogsRoutes from './routes/dogsRoutes.js';
+import notificationsRoutes from './routes/notificationsRoutes.js';
 import cors from 'cors';
 import 'dotenv/config.js';
 import walksRoutes from "./routes/walksRoutes.js";
@@ -37,6 +38,7 @@ app.get('/', (req, res) => {
 app.use('/api/users', usersRoutes);
 app.use('/api/dogs', dogsRoutes);
 app.use('/api/walks', walksRoutes);
+app.use('/api/notifications', notificationsRoutes)
 
 mongoose
 .connect(uri)

@@ -11,6 +11,10 @@ const Walk = ({ walk, onDelete }) => {
         onDelete();
     };
 
+    const handleApply = () => {
+        
+    }
+
     return (
         <div key={walk._id} className="dog-card">
             <div className='flex justify-start items-center gap-x-2'>
@@ -39,6 +43,14 @@ const Walk = ({ walk, onDelete }) => {
                     <div className='action-icons'>
                         <button onClick={handleDelete}>
                             <MdOutlineDelete className='delete-icon'/>
+                        </button>
+                    </div>
+                }
+                {
+                    walk.user._id != localStorage.getItem('userId') &&
+                    <div className='action-icons'>
+                        <button className="indigo-button" onClick={handleApply}>
+                            Apply
                         </button>
                     </div>
                 }
