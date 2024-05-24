@@ -14,7 +14,7 @@ const Dog = ({ dog, onDelete }) => {
     };
 
     return (
-        <div key={dog._id} className='dog-card'>
+        <div key={dog._id} className='component-card'>
             <div className='flex justify-start items-center gap-x-2'>
                 <FaDog className='name' />
                 <h2 className='my-1 text-lg font-semibold'>{dog.name}</h2>

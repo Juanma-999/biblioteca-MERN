@@ -1,19 +1,11 @@
-import { Router } from 'express';
-import {
-    createNotification,
-    getNotificationsByUser,
-    deleteNotification,
-    deleteAllNotifications,
-    markOneNotificationasread,
-    markAllNotificationsAsRead,
-} from '../controllers/notificationController.js';
-const notificationsRoutes = Router();
+import express from 'express';
+import auth from '../middlewares/auth.js';
+import { createNotification, getNotificationsByUser } from '../controllers/notificationController.js';
 
-notificationsRoutes.post('/', createNotification);
-notificationsRoutes.get('/user/:id', getNotificationsByUser);
-notificationsRoutes.delete('/:id', deleteNotification);
-notificationsRoutes.delete('/', deleteAllNotifications);
-notificationsRoutes.put('/:id', markOneNotificationasread);
-notificationsRoutes.put('/', markAllNotificationsAsRead);
+const router = express.Router();
 
-export default notificationsRoutes;
+
+router.post('/', auth, createNotification);
+router.get('/user/:userId', auth, getNotificationsByUser);
+
+export default router;

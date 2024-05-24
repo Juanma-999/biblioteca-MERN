@@ -45,6 +45,10 @@ const CreateWalk = () => {
                 userId
             };
             await addWalk(walkData);
+            toast.success("Walk added successfully!", {
+                position: "top-right",
+                autoClose: 5000,
+            });
             navigate(`/users/${userId}`);
         } catch (e) {
             toast.error(e.message, {

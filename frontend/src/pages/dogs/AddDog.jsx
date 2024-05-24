@@ -15,6 +15,10 @@ const AddDog = () => {
     const handleSubmit = async () => {
         try {
             await addDog(name, breed, age, userId, description);
+            toast.success("Dog added successfully!", {
+                position: "top-right",
+                autoClose: 5000,
+            });
             navigate(`/users/${userId}`);
         } catch(e) {
             toast.error(e.message, {

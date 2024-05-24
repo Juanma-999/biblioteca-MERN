@@ -83,7 +83,6 @@ const getDogsByUser = async (userId) => {
 }
 
 const addDog = async (name, breed, age, userId, description ) => {
-    console.log("addDog params:", {name, breed, age, userId });
     if(!name || !breed || !age ) {
         throw Error("Missing required fields");
     }
@@ -96,10 +95,8 @@ const addDog = async (name, breed, age, userId, description ) => {
         body: JSON.stringify({name, breed, age, userId, description }),
     })
 
-    console.log("addDog response:", res);
     const data = await res.json();
 
-    console.log("addDog data:", data);
     if(!res.ok) {
         throw Error(data.error);
     }

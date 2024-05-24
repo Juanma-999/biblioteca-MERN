@@ -36,8 +36,8 @@
     .container {
         @apply flex flex-row flex-wrap
     }
-    .dog-card {
-        @apply border-2 border-gray-500 rounded-lg size-64 px-4 py-4 m-4 relative hover:shadow-xl hover:border-indigo-500;
+    .component-card {
+        @apply border-2 border-gray-500 rounded-lg size-72 px-4 py-4 m-4 relative hover:shadow-xl hover:border-indigo-500 box-border overflow-hidden;
     }
     .indigo-button {
         @apply bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded;
@@ -46,35 +46,35 @@
         @apply bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded
     }
 
-    .dog-card .name {
+    .component-card .name {
         @apply text-indigo-500 text-2xl;
     }
 
-    .dog-card .age {
+    .component-card .age {
         @apply text-lg;
     }
 
-    .dog-card .breed {
+    .component-card .breed {
         @apply text-lg;
     }
 
-    .dog-card .username {
+    .component-card .username {
         @apply text-indigo-500 hover:text-blue-500 text-lg;
     }
 
-    .dog-card .action-icons {
+    .component-card .action-icons {
         @apply flex justify-between items-center gap-x-2 mt-4 p-4;
     }
 
-    .dog-card .action-icons svg {
+    .component-card .action-icons svg {
         @apply text-3xl hover:text-black cursor-pointer;
     }
 
-    .dog-card .edit-icon {
+    .component-card .edit-icon {
         @apply text-2xl text-yellow-500 hover:text-black;
     }
 
-    .dog-card .delete-icon {
+    .component-card .delete-icon {
         @apply text-2xl text-red-500 hover:text-black;
     }
 

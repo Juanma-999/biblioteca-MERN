@@ -15,6 +15,10 @@ const EditDog = () => {
     const handleUpdate = async () => {
         try {
             await updateDog(state._id, name, breed, age, description);
+            toast.success("Dog updated successfully!", {
+                position: "top-right",
+                autoClose: 5000,
+            });
             navigate(`/users/${localStorage.getItem('userId')}`);
         } catch(e) {
             toast.error(e.message, {

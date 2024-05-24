@@ -17,7 +17,6 @@ const Home = () => {
         const fetchData = async () => {
             try {
                 const data = await getWalks();
-                console.log('data:', data);
                 const walksData = data.map((walk) => {
                     return {
                         ...walk,

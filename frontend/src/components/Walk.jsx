@@ -1,22 +1,51 @@
-import { BiUserCircle } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
-import DogDetail from './DogDetail';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { BiUserCircle } from 'react-icons/bi';
 import { MdOutlineDelete } from 'react-icons/md';
+import { toast } from 'react-toastify';
+import DogDetail from './DogDetail';
+import { createNotification } from '../controller/notificationsController';
 
 const Walk = ({ walk, onDelete }) => {
-    const [showDetail, setShowDetail] = useState(false);
+    const [showDetail, setShowDetail] = useState(null);
 
-    const handleDelete = () => {
-        onDelete();
+    const handleDelete = async () => {
+        try {
+            await onDelete();
+            toast.success("Walk deleted successfully!", {
+                position: "top-right",
+                autoClose: 5000,
+            });
+        } catch (e) {
+            toast.error(e.message, {
+                position: "top-right",
+                autoClose: 5000,
+            });
+        }
     };
 
-    const handleApply = () => {
-        
-    }
+    const handleApply = async () => {
+        try {
+            await createNotification({
+                receiver: walk.user._id,
+                title: "A user applied to one of your walks!",
+                requester: localStorage.getItem("userId"),
+                walk: walk._id
+            });
+            toast.success("Notification sent!", {
+                position: "top-right",
+                autoClose: 5000,
+            });
+        } catch (e) {
+            toast.error(e.message, {
+                position: "top-right",
+                autoClose: 5000,
+            });
+        }
+    };
 
     return (
-        <div key={walk._id} className="dog-card">
+        <div className="component-card">
             <div className='flex justify-start items-center gap-x-2'>
                 <h2 className='my-1 breed'><b>Location:</b> {walk.location}</h2>
             </div>
@@ -27,36 +56,32 @@ const Walk = ({ walk, onDelete }) => {
                 <BiUserCircle className="text-2xl" />
                 <h2 className="username font-medium">{walk.user.username}</h2>
             </Link>
-                <h2 className='my-1 breed'><b>Dogs:</b></h2>
-                <div className="flex flex-row gap-x-4 flex-wrap">
-                    {walk.dogs.map((dog) => (
-                        <div key={dog._id}>
-                            {showDetail && showDetail === dog._id && (
-                                <DogDetail dog={dog} username={walk.user.username} userId={walk.user._id} onClose={() => setShowDetail(false)} />
-                            )}
-                            <button onClick={() => setShowDetail(dog._id)} className="text-blue-500">{dog.name}</button>
-                        </div>
-                    ))}
+            <h2 className='my-1 breed'><b>Dogs:</b></h2>
+            <div className="flex flex-row gap-x-4 flex-wrap">
+                {walk.dogs.map((dog) => (
+                    <div key={dog._id}>
+                        {showDetail === dog._id && (
+                            <DogDetail dog={dog} username={walk.user.username} userId={walk.user._id} onClose={() => setShowDetail(null)} />
+                        )}
+                        <button onClick={() => setShowDetail(dog._id)} className="text-blue-500">{dog.name}</button>
+                    </div>
+                ))}
+            </div>
+            {walk.user._id === localStorage.getItem('userId') ? (
+                <div className='action-icons'>
+                    <button onClick={handleDelete}>
+                        <MdOutlineDelete className='delete-icon'/>
+                    </button>
                 </div>
-                {
-                    walk.user._id === localStorage.getItem('userId') &&
-                    <div className='action-icons'>
-                        <button onClick={handleDelete}>
-                            <MdOutlineDelete className='delete-icon'/>
-                        </button>
-                    </div>
-                }
-                {
-                    walk.user._id != localStorage.getItem('userId') &&
-                    <div className='action-icons'>
-                        <button className="indigo-button" onClick={handleApply}>
-                            Apply
-                        </button>
-                    </div>
-                }
+            ) : (
+                <div className='action-icons'>
+                    <button className="indigo-button" onClick={handleApply}>
+                        Apply
+                    </button>
+                </div>
+            )}
         </div>
-    )
-}
+    );
+};
 
 export default Walk;
-

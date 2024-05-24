@@ -1,13 +1,16 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { BiLogIn, BiLogOut, BiUserCircle } from "react-icons/bi";
-import { FaHome, FaRegIdCard } from "react-icons/fa";
-
+import { FaHome, FaRegIdCard, FaBell } from "react-icons/fa";
+import { getNotificationsByUser } from "../controller/notificationsController";
+import NotificationsModal from "../components/NotificationsModal";
 
 const Layout = () => {
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
+    const [notifications, setNotifications] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleLogout = () => {
         setUser({ email: null, id: null });
@@ -15,6 +18,14 @@ const Layout = () => {
         localStorage.removeItem('token');
         navigate('/');
     };
+
+    useEffect(() => {
+        if (user.email) {
+            getNotificationsByUser(localStorage.userId).then(data => {
+                setNotifications(data.data);
+            });
+        }
+    }, [user.email]);
 
     return (
         <>
@@ -29,6 +40,11 @@ const Layout = () => {
                             <div className='flex justify-start items-center gap-x-2'>
                                 <BiUserCircle className='text-white-500 text-2xl' />
                                 <Link className="nav-link" to={`/users/${localStorage.userId}`}>My profile</Link>
+                            </div>
+                            <div className='flex justify-start items-center gap-x-2'>
+                                <FaBell className='text-white-500 text-2xl' onClick={() => setIsModalOpen(true)} />
+                                <NotificationsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} notifications={notifications} />
+                                Notifications
                             </div>
                             <div className='flex justify-start items-center gap-x-2'>
                                 <BiLogOut className='text-white-500 text-2xl' />
@@ -56,4 +72,5 @@ const Layout = () => {
     );
 };
 
-export default Layout
+export default Layout;
+
