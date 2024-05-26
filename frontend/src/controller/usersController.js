@@ -47,11 +47,11 @@ const loginUser = async(email, password) => {
     localStorage.setItem('userId', parsedToken._id);
 }
 
-const registerUser = async(email, username, password, confirmPassword) => {
-    if(!email || !password || !confirmPassword || !username) {
+const registerUser = async (username, email, password, confirmPassword) => {
+    if (!email || !password || !confirmPassword || !username) {
         throw Error('Missing required fields');
     }
-    if(password !== confirmPassword) {
+    if (password !== confirmPassword) {
         throw Error('Passwords do not match');
     }
     const res = await fetch('/api/users/register', {
@@ -59,16 +59,20 @@ const registerUser = async(email, username, password, confirmPassword) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email, password, username})
+        body: JSON.stringify({ email, password, username })
     });
     const data = await res.json();
-    if(!res.ok) {
+    if (!res.ok) {
         throw Error(data.error);
     }
     localStorage.setItem('token', data.token);
     localStorage.setItem('email', data.email);
+    const base64Url = data.token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    const parsedToken = JSON.parse(window.atob(base64));
+    localStorage.setItem('userId', parsedToken._id);
     return data;
-}
+};
 
 export { getUserById, loginUser, registerUser };
 

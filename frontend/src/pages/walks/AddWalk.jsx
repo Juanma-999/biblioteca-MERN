@@ -11,7 +11,9 @@ const CreateWalk = () => {
     const { userId } = useParams();
     const [location, setLocation] = useState("");
     const [frequency, setFrequency] = useState("");
-    const [dogs, setDogs] = useState([]);
+    const [date, setDate] = useState(new Date());
+    const [dateString, setDateString] = useState("");
+    const [dOGS, setDogs] = useState([]);
     const [picklists, setPicklists] = useState([{ selectedDog: "" }]);
     const [selectedDogs, setSelectedDogs] = useState([]);
     const [error, setError] = useState("");
@@ -41,6 +43,7 @@ const CreateWalk = () => {
             const walkData = {
                 location,
                 frequency,
+                date: dateString,
                 dogs: selectedDogs,
                 userId
             };
@@ -72,6 +75,11 @@ const CreateWalk = () => {
         setSelectedDogs(newSelectedDogs.filter(dogId => dogId));
     };
 
+    const handleDateChange = (e) => {
+        setDate(e.target.valueAsDate);
+        setDateString(e.target.value);
+    };
+
     if (error) {
         return <div className="text-red-500">{error}</div>;
     }
@@ -99,10 +107,19 @@ const CreateWalk = () => {
                             className="border-2 border-gray-500 px-4 py-2 w-full"
                         />
                     </div>
+                    <div className="my-4">
+                        <label className="text-xl mr-4 text-gray-500">Date</label>
+                        <input
+                            type="date"
+                            value={dateString}
+                            onChange={handleDateChange}
+                            className="border-2 border-gray-500 px-4 py-2 w-full"
+                        />
+                    </div>
                     {picklists.map((picklist, index) => (
                         <Picklist
                             key={index}
-                            dogs={dogs}
+                            dogs={dOGS}
                             selectedDog={picklist.selectedDog}
                             onSelectDog={(value) => handlePicklistChange(index, value)}
                         />

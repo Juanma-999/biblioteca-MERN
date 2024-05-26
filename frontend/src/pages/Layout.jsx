@@ -16,6 +16,7 @@ const Layout = () => {
         setUser({ email: null, id: null });
         localStorage.removeItem('email');
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
         navigate('/');
     };
 

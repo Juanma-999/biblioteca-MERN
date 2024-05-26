@@ -34,7 +34,7 @@ const Dog = ({ dog, onDelete }) => {
             {
                 dog.user.email === localStorage.getItem('email') &&
                 <div className='action-icons'>
-                    <BiShow className='text-3xl text-blue-800' onClick={() => setShowDetail(true)} />
+                    <BiShow className='show-icon' onClick={() => setShowDetail(true)} />
                     <Link to="/edit" state={ dog }>
                         <AiOutlineEdit className='edit-icon'/>
                     </Link>

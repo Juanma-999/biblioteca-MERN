@@ -12,6 +12,33 @@ const Home = () => {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
     const [error, setError] = useState(null);
+    const [showDeleteWalkModal, setShowDeleteWalkModal] = useState(false);
+    const [walkToDelete, setWalkToDelete] = useState(null);
+
+    const handleDeleteWalk = (walkId) => {
+        setWalkToDelete(walkId);
+        setShowDeleteWalkModal(true);
+      };
+    
+      const handleDeleteConfirm = async () => {
+          try {
+            await deleteWalk(walkToDelete);
+            const updatedWalks = walks.filter(walk => walk._id !== walkToDelete);
+            setWalks(updatedWalks);
+          } catch (e) {
+            toast.error(e.message, {
+              position: "top-right",
+              autoClose: 5000,
+            });
+          }
+        setShowDeleteWalkModal(false);
+        setWalkToDelete(null);
+      };
+    
+      const handleDeleteCancel = () => {
+        setShowDeleteWalkModal(false);
+        setWalkToDelete(null);
+      };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,11 +86,28 @@ const Home = () => {
                 <h1 className="title">Latest walks:</h1>
                 <div className="container">
                     {walks && walks.map((walk) => (
-                        <Walk key={walk._id} walk={walk}/>
+                        <Walk key={walk._id} walk={walk} onDelete={() => handleDeleteWalk(walk._id)}/>
                     ))}
                 </div>
             </section>
+            {
+        (showDeleteWalkModal ) && (
+          <div className={`fixed inset-0 w-full h-full z-50 bg-gray-700 bg-opacity-50 flex items-center justify-center ${showDeleteWalkModal ? "block" : "hidden"}`}>
+            <div className="bg-white p-8 rounded-md">
+              <h2 className="text-2xl">Delete walk?</h2>
+              <p>
+                Are you sure you want to delete this walk?
+              </p>
+              <div className="flex justify-end">
+                <button className="mr-4" onClick={handleDeleteCancel}>Cancel</button>
+                <button className="red-button" onClick={handleDeleteConfirm}>Confirm</button>
+              </div>
+            </div>
+          </div>
+        )
+      }
         </div>
+        
     );
 };
 

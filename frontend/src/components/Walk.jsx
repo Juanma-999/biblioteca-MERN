@@ -12,10 +12,6 @@ const Walk = ({ walk, onDelete }) => {
     const handleDelete = async () => {
         try {
             await onDelete();
-            toast.success("Walk deleted successfully!", {
-                position: "top-right",
-                autoClose: 5000,
-            });
         } catch (e) {
             toast.error(e.message, {
                 position: "top-right",
@@ -47,6 +43,9 @@ const Walk = ({ walk, onDelete }) => {
     return (
         <div className="component-card">
             <div className='flex justify-start items-center gap-x-2'>
+                <h2 className='my-1 breed'><b>Date:</b> {new Date(walk.date).toLocaleDateString()}</h2>
+            </div>
+            <div className='flex justify-start items-center gap-x-2'>
                 <h2 className='my-1 breed'><b>Location:</b> {walk.location}</h2>
             </div>
             <div className='flex justify-start items-center gap-x-2'>
@@ -68,13 +67,13 @@ const Walk = ({ walk, onDelete }) => {
                 ))}
             </div>
             {walk.user._id === localStorage.getItem('userId') ? (
-                <div className='action-icons'>
+                <div className="absolute top-2 right-2">
                     <button onClick={handleDelete}>
-                        <MdOutlineDelete className='delete-icon'/>
+                        <MdOutlineDelete className='text-3xl text-red-500 hover:text-black cursor-pointer'/>
                     </button>
                 </div>
             ) : (
-                <div className='action-icons'>
+                <div className='absolute top-2 right-2'>
                     <button className="indigo-button" onClick={handleApply}>
                         Apply
                     </button>

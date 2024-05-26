@@ -19,6 +19,10 @@ const walkSchema = mongoose.Schema(
         frequency: {
             type: String,
             require: true,
+        },
+        date: {
+            type: Date,
+            default: Date.now,
         }
     },
     {

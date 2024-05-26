@@ -62,7 +62,7 @@ const getWalkById = async (req, res) => {
 
 const addWalk = async (req, res) => {
     try {
-        const { dogs, location, frequency } = req.body;
+        const { dogs, location, frequency, date } = req.body;
         if (!dogs || !location || !frequency) {
             return res.status(400).json({ error: "Missing required fields" });
         }
@@ -72,6 +72,7 @@ const addWalk = async (req, res) => {
             dogs,
             location,
             frequency,
+            date,
         };
         const walk = await Walk.create(newWalk);
         return res.status(201).json(walk);
@@ -82,8 +83,8 @@ const addWalk = async (req, res) => {
 }
 
 const updateWalk = async (req, res) => {
-    const { dogs, location } = req.body;
-    if (!dogs || !location) {
+    const { dogs, location, frequency, date } = req.body;
+    if (!dogs || !location || !frequency || !date) {
         return res.status(400).json({ error: "Missing required fields" });
     }
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -98,7 +99,7 @@ const updateWalk = async (req, res) => {
         return res.status(401).json({ error: "You do not own this walk" });
     }
     try {
-        await Walk.updateOne({ _id: req.params.id }, { dogs, location });
+        await Walk.updateOne({ _id: req.params.id }, { dogs, location, frequency, date });
         res.status(200).json({ success: "Walk updated", Walk });
     } catch (error) {
         res.status(500).json({ error: error.message });

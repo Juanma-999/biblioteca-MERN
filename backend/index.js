@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
     console.log(req);
-    return res.status(234).send('Welcome to MERN stack tutorial!');
+    return res.status(234);
 });
 
 app.use('/api/users', usersRoutes);

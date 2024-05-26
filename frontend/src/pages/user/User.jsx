@@ -64,34 +64,36 @@ const User = () => {
   };
 
   const handleDeleteConfirm = async () => {
-    if (walkToDelete) {
-      try {
-        await deleteWalk(walkToDelete);
-        const updatedWalks = walks.filter(walk => walk._id !== walkToDelete);
-        setWalks(updatedWalks);
-      } catch (e) {
+    try {
+        if (walkToDelete) {
+            await deleteWalk(walkToDelete);
+            const updatedWalks = walks.filter(walk => walk._id !== walkToDelete);
+            setWalks(updatedWalks);
+            toast.success("Walk deleted successfully!", {
+                position: "top-right",
+                autoClose: 5000,
+            });
+        } else {
+            await deleteDog(dogToDelete);
+            const updatedDogs = dogs.filter(dog => dog._id !== dogToDelete);
+            setDogs(updatedDogs);
+            toast.success("Dog deleted successfully!", {
+                position: "top-right",
+                autoClose: 5000,
+            });
+        }
+    } catch (e) {
         toast.error(e.message, {
-          position: "top-right",
-          autoClose: 5000,
+            position: "top-right",
+            autoClose: 5000,
         });
-      }
-    } else {
-      try {
-        await deleteDog(dogToDelete);
-        const updatedDogs = dogs.filter(dog => dog._id !== dogToDelete);
-        setDogs(updatedDogs);
-      } catch (e) {
-        toast.error(e.message, {
-          position: "top-right",
-          autoClose: 5000,
-        });
-      }
+    } finally {
+        setShowDeleteWalkModal(false);
+        setShowDeleteDogModal(false);
+        setWalkToDelete(null);
+        setDogToDelete(null);
     }
-    setShowDeleteWalkModal(false);
-    setShowDeleteDogModal(false);
-    setWalkToDelete(null);
-    setDogToDelete(null);
-  };
+};
 
   const handleDeleteCancel = () => {
     setShowDeleteWalkModal(false);
