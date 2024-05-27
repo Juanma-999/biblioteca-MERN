@@ -106,12 +106,7 @@ const User = () => {
     <div className="flex justify-center">
       <section className="card">
         <div>
-          <p>
-            <b>Username:</b> {user.username}
-          </p>
-          <p>
-            <b>Email:</b> {user.email}
-          </p>
+          <h1 className="title">{user.username}&apos;s profile</h1>
           <div className='flex flex-row justify-between'>
             <h2 className="title my-1">Dogs owned by {user.username}:</h2>
             {
@@ -131,7 +126,7 @@ const User = () => {
               </div>
             ))}
           </div>
-          <div className='flex flex-row justify-between'>
+          <div className='flex flex-row justify-between my-3'>
             <h2 className="title my-1">Walks published by {user.username}:</h2>
             {
               id === localStorage.getItem("userId") && (

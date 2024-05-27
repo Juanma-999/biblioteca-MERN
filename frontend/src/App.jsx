@@ -7,6 +7,7 @@ import EditDog from './pages/dogs/EditDog';
 import User from './pages/user/User';
 import AddDog from './pages/dogs/AddDog';
 import AddWalk from './pages/walks/AddWalk';
+import EditWalk from './pages/walks/EditWalk';
 
 const App = () => {
   return <BrowserRouter>
@@ -15,10 +16,11 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
-        <Route path='edit' element={<EditDog />} />
+        <Route path='dogs/edit' element={<EditDog />} />
+        <Route path='walks/edit' element={<EditWalk />} />
         <Route path='users/:id' element={<User />} />
         <Route path='users/:userId/add-dog' element={<AddDog />} />
-        <Route path='/users/:userId/add-walk' element={<AddWalk />} />
+        <Route path='users/:userId/add-walk' element={<AddWalk />} />
       </ Route>
     </Routes>
   </BrowserRouter>
